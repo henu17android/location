@@ -4,15 +4,19 @@
         android:checkableBehavior="single">
     <item
         android:id="@+id/change_info"
-        android:title="修改信息"/>
+        android:title="修改信息"
+        android:icon="@mipmap/change_info"
+        />
 
     <item
         android:id="@+id/locate"
-        android:title="位置"/>
+        android:title="位置"
+        android:icon="@mipmap/locate"/>
 
     <item
         android:id="@+id/person_setting"
-        android:title="设置"/>
+        android:title="设置"
+        android:icon="@mipmap/setting"/>
 
     <item
         android:id="@+id/log_out"
