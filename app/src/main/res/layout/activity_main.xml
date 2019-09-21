@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,13 +9,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             >
-            
+
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,7 +29,7 @@
                     app:civ_border_width="2dp"
                     app:civ_border_color="#FFF"
                     android:layout_marginLeft="16dp"/>
-                
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -36,7 +39,7 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     />
-            
+
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
@@ -49,6 +52,28 @@
     </FrameLayout>
 
 
+    <!-- 搜索创建的群和加入的群类似于QQ-->
+    <android.support.v7.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:clickable="true"
+        android:inputType="number|text"
+        app:queryHint="搜索"
+        app:iconifiedByDefault="false"
+        android:background="@drawable/rounded_corner_search_box" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/search_editText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="15dp"-->
+<!--        android:layout_marginRight="15dp"-->
+<!--        android:hint="搜索"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:background="@drawable/rounded_corner_search_box" />-->
 
       <android.support.design.widget.NavigationView
           android:layout_width="match_parent"
@@ -61,3 +86,11 @@
 
    </android.support.v4.widget.DrawerLayout>
 
+
+    <ExpandableListView
+        android:id="@+id/expandable_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:groupIndicator="@null" />
+
+</LinearLayout>
