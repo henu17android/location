@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         popMenu = LayoutInflater.from(MainActivity.this).inflate(R.layout.add_pop_menu,null);
         initData();
+        initView();
         mGroupList = findViewById(R.id.expandable_listview);
         mAdapter = new GroupExpandListAdapter(this, groups, childs);
         mGroupList.setAdapter(mAdapter);
@@ -89,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         childs.add(childs1);
         childs.add(childs2);
         popMenu = LayoutInflater.from(MainActivity.this).inflate(R.layout.add_pop_menu,null);
-        initView();
 
     }
 
@@ -133,9 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (mCustomPopWindow!=null) {
                     mCustomPopWindow.dissmiss();
-                }
-                switch (v.getId()) {
-
                 }
             }
         };

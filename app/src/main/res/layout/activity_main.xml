@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    android:orientation="vertical"
-    tools:context=".MainActivity">
 
-        <RelativeLayout
+     <LinearLayout
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            >
+            android:background="@color/colorPrimary">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -49,7 +46,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"/>
         </RelativeLayout>
-    </FrameLayout>
+
 
 
     <!-- 搜索创建的群和加入的群类似于QQ-->
@@ -57,6 +54,7 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:clickable="true"
@@ -75,16 +73,7 @@
 <!--        android:layout_gravity="center_horizontal"-->
 <!--        android:background="@drawable/rounded_corner_search_box" />-->
 
-      <android.support.design.widget.NavigationView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:id="@+id/nav_view"
-          app:menu="@menu/nav_menu"
-          android:layout_gravity="start"
-          app:headerLayout="@layout/nav_header" />
 
-
-   </android.support.v4.widget.DrawerLayout>
 
 
     <ExpandableListView
@@ -92,5 +81,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:groupIndicator="@null" />
+     </LinearLayout>
+         <android.support.design.widget.NavigationView
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/nav_view"
+             app:menu="@menu/nav_menu"
+             android:layout_gravity="start"
+             app:headerLayout="@layout/nav_header" />
 
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>

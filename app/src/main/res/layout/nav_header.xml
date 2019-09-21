@@ -10,6 +10,7 @@
         android:background="@color/colorPrimary">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="16dp"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/nav_user_image"
             android:layout_width="96dp"
