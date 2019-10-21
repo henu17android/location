@@ -1,6 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        location {
+            keyAlias 'loc'
+            keyPassword '123456'
+            storeFile file('E:/360/location.jks')
+            storePassword '123456'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.location"
@@ -19,13 +31,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
