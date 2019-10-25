@@ -5,11 +5,24 @@ package com.example.bean;
  */
 public class User {
 
-    private int id;
-    private String phoneNumber;
-    private String userName;
-    private String createTime;
-    private int studentNumber;
+    private int id =0;
+    private String phoneNumber = null;
+    private String userName = null;
+    private String studentNumber = null;
+    private String password = null;
+
+    public User(String phoneNumber, String password) {
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public int getId() {
         return id;
@@ -23,11 +36,8 @@ public class User {
         return userName;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
 
-    public int getStudentNumber() {
+    public String getStudentNumber() {
         return studentNumber;
     }
 
@@ -43,11 +53,8 @@ public class User {
         this.userName = userName;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
 
-    public void setStudentNumber(int studentNumber) {
+    public void setStudentNumber(String studentNumber) {
         this.studentNumber = studentNumber;
     }
 }

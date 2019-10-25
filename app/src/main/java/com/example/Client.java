@@ -1,13 +1,17 @@
 package com.example;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
@@ -20,83 +24,65 @@ public class Client {
     private Socket socket = null;
     private DataInputStream inputStream = null;
     private DataOutputStream outputStream = null;
+    private static final String TAG = "Client";
+    private boolean isStartReceiveMsg;
 
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
     }
 
-    public void createConnection () throws IOException {
+    public void createConnection() throws IOException {
         try {
-            socket = new Socket(ip,port);
+            socket = new Socket(ip, port);
             socket.setSoTimeout(20000);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (socket!=null) {
-                socket.close();
-            }
         }
-
     }
 
-    public synchronized void sendMessage(String sendMessage) throws IOException {
+    public void sendMessage(String sendMessage) throws IOException {
+
+//        outputStream = new DataOutputStream(socket.getOutputStream());
+//        outputStream.writeBytes(sendMessage);
+
+
+        BufferedWriter out = null;
+        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+//            byte[] bytes = sendMessage.getBytes();
+//            outputStream.write(bytes);
+//            outputStream.writeUTF(sendMessage);
+
+        out.write(sendMessage);
+        Log.d(TAG, "sendMessage: " + sendMessage + out.toString());
+        out.flush();
+
+        out.close();
+    }
+
+
+    public synchronized String getMessage () throws IOException {
+        isStartReceiveMsg = true;
         try {
-            if (outputStream == null) {
-                outputStream = new DataOutputStream(socket.getOutputStream());
+            if (isStartReceiveMsg) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                if (reader.ready()) {
+                    reader.readLine();
+                    String text = "";
+                    while ((text = reader.readLine())!=null) {
+                        return text;
+                    }
+                }
             }
-
-            byte[] bytes = sendMessage.getBytes();
-            outputStream.write(bytes);
-            outputStream.flush();
-
-        } catch (IOException e) {
+        }catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if (outputStream!=null) {
-                outputStream.close();
-            }
         }
 
-
+       return null;
     }
-
-//    public synchronized String getMessage(int readSize) throws IOException {
-//        try {
-//            if (inputStream == null) {
-//                inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-//            }
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            if (inputStream !=null) {
-//                if (readSize!= -1 && readSize >0) {
-//                    for (int i = 0;i<readSize;i++) {
-//                        int read = inputStream.read();
-//                        if (read == -1) {
-//                            break;
-//                        }else {
-//                            byteArrayOutputStream.write(read);
-//                        }
-//            }
-//
-//
-//
-//                }
-//            }
-//            else {
-//                while (true) {
-//                    int read = inputStream.read();
-//                    if (read <=0) {
-//                        break;
-//                    }else {
-//                        byteArrayOutputStream.write(read);
-//                    }
-//                }
-//            }
-//
-//        }
-
 
 
 }
