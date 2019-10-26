@@ -1,7 +1,5 @@
 package com.example.location;
 
-import android.content.Intent;
-import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.example.Client;
+import com.example.client.Client;
 import com.example.bean.User;
-import com.example.util.JsonUtil;
-import com.example.util.ValidateUtil;
 
 
 import java.io.IOException;
@@ -63,30 +58,32 @@ public class IdentifyActivity extends AppCompatActivity implements View.OnClickL
             case R.id.confirm_submit:
                 user = new User(user_tele.getText().toString(), user_pwd.getText().toString());
                 Log.d(TAG, "onClick: "+user_tele.getText().toString()+user_pwd.getText().toString());
-                thread.start();
+//                thread.start();
                 break;
 
             default:
         }
     }
 
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            Client client = new Client("192.168.1.174", 8096);
-            Log.d(TAG, "run: "+user.getPassword()+user.getPhoneNumber());
-            String jsonString = JSON.toJSONString(user);
-            user.setId(8);
-            try {
-                client.createConnection();
-                client.sendMessage(jsonString);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d(TAG, "run: connection fail");
-            }
-
-        }
-    });
+//    Thread thread = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            Client client = new Client("192.168.1.174", 8096);
+//            Log.d(TAG, "run: "+user.getPassword()+user.getPhoneNumber());
+//            String jsonString = JSON.toJSONString(user);
+//            user.setId(8);
+//            try {
+//                client.createConnection();
+////                client.sendMessage(jsonString);
+//                Log.d(TAG, "getMessage:"+client.getMessage());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                Log.d(TAG, "run: connection fail:"+e.getMessage());
+//            }
+//
+//
+//        }
+//    });
 }
 
 
