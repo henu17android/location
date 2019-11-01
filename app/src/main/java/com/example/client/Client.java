@@ -60,8 +60,8 @@ public class Client {
 ////            outputStream.writeUTF(sendMessage);
 //
 ////        out.write(sendMessage);
-////        out.flush();
-////        out.close();
+//////        out.flush();
+//////        out.close();
 //
 //        outputStream.flush();
 //        outputStream.close();
@@ -86,7 +86,7 @@ public class Client {
 
     private String ip;
     private int port;
-    private static final String TAG = "Client";
+    private static final String TAG = "ClientClass";
 
     public Client(String ip,int port) {
         super();
@@ -143,6 +143,7 @@ public class Client {
         public void run() {
             inputThread.setStart(true);
             outputThread.setStart(true);
+            outputThread.setMsg("{开始通信}");
             inputThread.start();
             outputThread.start();
         }

@@ -2,9 +2,14 @@ package com.example.client;
 
 import android.util.Log;
 
+import org.json.JSONException;
+
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * client 读操作线程类
@@ -16,6 +21,8 @@ public class ClientInputThread extends Thread {
     private DataInputStream inputStream;
     private boolean isStart = true;
     private MessageListener mMessageListener;
+    private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+    private InputStreamReader reader;
 
 
     private static final String TAG = "ClientInputThread";
@@ -33,19 +40,51 @@ public class ClientInputThread extends Thread {
 
     @Override
     public void run() {
+
         try{
+//
+//          //qmn 自测用
+//            char[] buffer = new char[1024];
+//            while (isStart) {
+//                reader = new InputStreamReader(inputStream,"UTF-8");
+//                int readSize = reader.read(buffer);
+//                while (readSize!=-1) {
+//                    String msg = new String(buffer,0,readSize);
+//                    if (msg.charAt(msg.length()-1)=='}') {
+//                        Log.d(TAG, "run: "+readSize+"    "+msg);
+//                        break;
+//                    }
+//
+//                    mMessageListener.getMessage(msg);
+//
+//                }
+//
+//            }
+
+
+            //与服务器测试用
             byte[] buffer = new byte[1024];
             while (isStart) {
+
                 int readSize = inputStream.read(buffer);
-                String msg = new String(buffer,0,readSize);
-                //接口传递 获得的message
-                mMessageListener.getMessage(msg);
+                while (readSize!=-1) {
+                    String msg = new String(buffer, 0,readSize,UTF8_CHARSET);
+                    if (msg.charAt(msg.length()-1)=='}') {
+                        Log.d(TAG, "run: "+readSize+"    "+msg);
+                        break;
+                    }
+
+                    mMessageListener.getMessage(msg);
+
+                }
 
             }
+
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d(TAG, "run: readSize:"+e.getMessage());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

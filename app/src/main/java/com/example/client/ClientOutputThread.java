@@ -5,7 +5,10 @@ import android.util.Log;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 /**
  * client 写线程类
@@ -17,12 +20,14 @@ public class ClientOutputThread extends Thread {
     private DataOutputStream outputStream;
     private boolean isStart = true;
     private String msg;
+    private OutputStreamWriter streamWriter;
     private static final String TAG = "ClientOutputThread";
 
     public ClientOutputThread (Socket socket) {
         this.socket = socket;
         try {
             outputStream = new DataOutputStream(socket.getOutputStream());
+            Log.d(TAG, "ClientOutputThread: ");
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "ClientOutputThread: "+e.getMessage());
@@ -34,19 +39,28 @@ public class ClientOutputThread extends Thread {
         try {
             while (isStart) {
                 if (msg != null) {
-                    outputStream.writeBytes(msg);
+                    outputStream.write(msg.getBytes());
                     outputStream.flush();
-                    synchronized (this){
-                        wait();
+//                    Log.d(TAG, "run: 发送成功");
+//                    streamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+//                    StringBuffer sBuilder = new StringBuffer();
+//                    sBuilder.append(msg);
+//                    streamWriter.write(sBuilder.toString());
+//                    streamWriter.flush();
+                    Log.d(TAG, "send: "+msg);
+                    synchronized (this) {
+                        wait();   //发送后线程等待
+
                     }
+
                 }
             }
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "run: writeBytes:"+e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.d(TAG, "run:synchronized :"+e.getMessage());
         }
     }
 
@@ -54,7 +68,7 @@ public class ClientOutputThread extends Thread {
         return socket;
     }
 
-    public DataOutputStream getOutputStream() {
+    public OutputStream getOutputStream() {
         return outputStream;
     }
 
@@ -76,5 +90,9 @@ public class ClientOutputThread extends Thread {
 
     public void setStart(boolean start) {
         isStart = start;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

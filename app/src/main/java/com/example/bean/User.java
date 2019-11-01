@@ -11,8 +11,13 @@ public class User {
     private String studentNumber = null;
     private String password = null;
 
-    public User(String phoneNumber, String password) {
-        this.phoneNumber = phoneNumber;
+//    public User(String phoneNumber, String password) {
+//        this.phoneNumber = phoneNumber;
+//        this.password = password;
+//    }
+
+    public User(String userName,String password) {
+        this.userName = userName;
         this.password = password;
     }
 

@@ -9,9 +9,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.LocationApp;
 import com.example.client.Client;
 import com.example.bean.User;
+import com.example.client.ClientMessage;
+import com.example.client.ClientMessageType;
+import com.example.client.ClientOutputThread;
+import com.example.client.MessageListener;
 
+
+import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -24,6 +32,9 @@ public class IdentifyActivity extends AppCompatActivity implements View.OnClickL
     private TextView numberError;
     private EditText user_pwd;
     private User user;
+    private Client client;
+    private LocationApp locationApp;
+
 
     private final static String TAG = "IdentifyActivity";
 
@@ -31,7 +42,9 @@ public class IdentifyActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify);
-
+        locationApp = (LocationApp)this.getApplication();
+        client = locationApp.getClient();
+        Log.d("client:id", "IdentifyActivity"+client);
         initView();
 
 
@@ -56,34 +69,41 @@ public class IdentifyActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.confirm_submit:
-                user = new User(user_tele.getText().toString(), user_pwd.getText().toString());
+                user = new User("123", "123");
                 Log.d(TAG, "onClick: "+user_tele.getText().toString()+user_pwd.getText().toString());
-//                thread.start();
+                sendRegister(user);
+
                 break;
 
             default:
         }
     }
 
-//    Thread thread = new Thread(new Runnable() {
-//        @Override
-//        public void run() {
-//            Client client = new Client("192.168.1.174", 8096);
-//            Log.d(TAG, "run: "+user.getPassword()+user.getPhoneNumber());
-//            String jsonString = JSON.toJSONString(user);
-//            user.setId(8);
-//            try {
-//                client.createConnection();
-////                client.sendMessage(jsonString);
-//                Log.d(TAG, "getMessage:"+client.getMessage());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                Log.d(TAG, "run: connection fail:"+e.getMessage());
-//            }
-//
-//
-//        }
-//    });
+    private void sendRegister(User user) {
+        ClientMessage clientMessage  = new ClientMessage();
+        clientMessage.setUser(user);
+        clientMessage.setMessageType(ClientMessageType.REGISTER);
+
+        final ClientOutputThread out = client.getClientOutputThread();
+        out.setMsg(JSON.toJSONString(clientMessage));
+        synchronized (out) {
+            out.notify();
+        }
+
+
+
+
+
+        client.getClientInputThread().setmMessageListener(new MessageListener() {
+            @Override
+            public void getMessage(String msg) throws JSONException {
+                Log.d(TAG, "getMessage: "+msg);
+            }
+        });
+
+    }
+
+
 }
 
 
