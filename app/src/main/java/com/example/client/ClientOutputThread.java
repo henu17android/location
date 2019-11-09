@@ -20,7 +20,6 @@ public class ClientOutputThread extends Thread {
     private DataOutputStream outputStream;
     private boolean isStart = true;
     private String msg;
-    private OutputStreamWriter streamWriter;
     private static final String TAG = "ClientOutputThread";
 
     public ClientOutputThread (Socket socket) {
@@ -50,9 +49,7 @@ public class ClientOutputThread extends Thread {
                     Log.d(TAG, "send: "+msg);
                     synchronized (this) {
                         wait();   //发送后线程等待
-
                     }
-
                 }
             }
             outputStream.close();

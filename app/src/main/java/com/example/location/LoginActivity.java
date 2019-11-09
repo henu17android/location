@@ -1,6 +1,7 @@
 package com.example.location;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,8 @@ import com.example.client.MessageListener;
 import org.json.JSONException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public SharedPreferences.Editor editor;
     private EditText userName;
     private EditText password;
     private TextView phoneRegist;
@@ -69,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void initView(){
+        editor = getSharedPreferences("data",MODE_PRIVATE).edit();
         userName = findViewById(R.id.user_name);
         password = findViewById(R.id.user_password);
         phoneRegist = findViewById(R.id.phone_register);
@@ -117,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    private void sendLoginMessage(String userName,String password) {
+    private void sendLoginMessage(final String userName, String password) {
 
 
         if (userName.length()<=0||password.length()<=0) {
@@ -138,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
 
-            Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(message));
+            Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(clientMessage));
 
             client.getClientInputThread().setmMessageListener(new MessageListener() {
             @Override
@@ -160,6 +164,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 //                        startActivity(intent);
 //                        finish();
+                        editor.putString("phoneNumber",userName);
+                        editor.apply();
 
                     default:
                 }

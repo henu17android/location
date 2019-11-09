@@ -29,7 +29,12 @@ android {
         }
     }
 }
-
+apply plugin: 'com.mob.sdk'
+MobSDK{
+    appKey "2c7a50bdaff38"
+    appSecret "e2d19391e641f6671ca1c018b6db41a8"
+    SMSSDK{}
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'

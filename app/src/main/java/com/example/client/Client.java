@@ -143,7 +143,7 @@ public class Client {
         public void run() {
             inputThread.setStart(true);
             outputThread.setStart(true);
-            outputThread.setMsg("{开始通信}");
+//            outputThread.setMsg("{开始通信}");
             inputThread.start();
             outputThread.start();
         }
