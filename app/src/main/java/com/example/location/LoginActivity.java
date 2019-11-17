@@ -1,6 +1,7 @@
 package com.example.location;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,9 @@ import com.example.client.MessageListener;
 import org.json.JSONException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public SharedPreferences sharedPreferences;
+    private Boolean isLogin;
     private EditText userName;
     private EditText password;
     private TextView phoneRegist;
@@ -45,25 +49,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Log.d("client:id", "LoginActivity "+client);
-        initView();
-        locationApp = (LocationApp)this.getApplication();
-        client = locationApp.getClient();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message message = new Message();
-                if (client.connection()) {
-                    message.what = CONNECTION_SUCCESS;
-                }else {
-                    message.what = CONNECTION_FAIL;
+
+        sharedPreferences = getSharedPreferences("SaveSetting",MODE_PRIVATE);
+        isLogin = sharedPreferences.getBoolean("isLogin",true);
+        if(isLogin){
+            //登录的处理
+            Log.d("client:id", "LoginActivity "+client);
+            initView();
+            locationApp = (LocationApp)this.getApplication();
+            client = locationApp.getClient();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Message message = new Message();
+                    if (client.connection()) {
+                        message.what = CONNECTION_SUCCESS;
+                    }else {
+                        message.what = CONNECTION_FAIL;
+                    }
+                    handler.sendMessage(message);
+
                 }
-                handler.sendMessage(message);
-
-            }
-        }).start();
-
-
+            }).start();
+        }else {
+            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(mainIntent);
+        }
 
     }
 
@@ -91,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 break;
 
+            //TODO 登录成功后，加上 saveIsLogin(false);
             case R.id.login_button :
                  sendLoginMessage(userName.getText().toString(),password.getText().toString());
 
@@ -117,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    private void sendLoginMessage(String userName,String password) {
+    private void sendLoginMessage(final String userName, String password) {
 
 
         if (userName.length()<=0||password.length()<=0) {
@@ -138,7 +150,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
 
-            Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(message));
+            Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(clientMessage));
 
             client.getClientInputThread().setmMessageListener(new MessageListener() {
             @Override
@@ -168,6 +180,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 //
+    }
+
+    private void saveIsLogin(boolean islogin){
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLogin",islogin);
+        editor.commit();
     }
 
 

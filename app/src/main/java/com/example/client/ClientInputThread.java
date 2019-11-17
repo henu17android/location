@@ -73,13 +73,10 @@ public class ClientInputThread extends Thread {
                         Log.d(TAG, "run: "+readSize+"    "+msg);
                         break;
                     }
-
                     mMessageListener.getMessage(msg);
-
                 }
 
             }
-
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
