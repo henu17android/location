@@ -66,7 +66,16 @@
         android:layout_height="52dp"
         android:layout_margin="8dp"
         android:background="@drawable/login_style"
+        android:inputType="textPassword"
         android:hint=" 请输入密码" />
+    <EditText
+        android:id="@+id/user_password_twice"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_margin="8dp"
+        android:inputType="textPassword"
+        android:background="@drawable/login_style"
+        android:hint=" 请输入确认密码" />
 
     <LinearLayout
         android:layout_width="match_parent"

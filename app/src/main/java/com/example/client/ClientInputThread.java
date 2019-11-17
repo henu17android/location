@@ -1,6 +1,5 @@
 package com.example.client;
 
-import android.content.Intent;
 import android.util.Log;
 
 import org.json.JSONException;
