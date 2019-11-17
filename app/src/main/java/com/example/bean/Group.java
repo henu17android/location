@@ -1,40 +1,51 @@
 package com.example.bean;
 
+import java.util.List;
+
 public class Group {
-    int groupId;
-    String groupName;
-    String introduce;
-    int adminId;
+    int GroupId;
+    String GroupName;
+    String Introduce;
+    int AdminId;
+    List<User> UserList; //成员名单
 
     public int getGroupId() {
-        return groupId;
+        return GroupId;
     }
 
     public String getGroupName() {
-        return groupName;
+        return GroupName;
     }
 
     public String getIntroduce() {
-        return introduce;
+        return Introduce;
     }
 
     public int getAdminId() {
-        return adminId;
+        return AdminId;
+    }
+
+    public List<User> getUserList() {
+        return UserList;
     }
 
     public void setGroupId(int groupId) {
-        this.groupId = groupId;
+        GroupId = groupId;
     }
 
     public void setGroupName(String groupName) {
-        this.groupName = groupName;
+        GroupName = groupName;
     }
 
     public void setIntroduce(String introduce) {
-        this.introduce = introduce;
+        Introduce = introduce;
     }
 
     public void setAdminId(int adminId) {
-        this.adminId = adminId;
+        AdminId = adminId;
+    }
+
+    public void setUserList(List<User> userList) {
+        UserList = userList;
     }
 }

@@ -81,7 +81,7 @@ public class Client {
 //
 //    }
 
-    private Socket socket;
+    public Socket socket;
     private ClientThread clientThread;
 
     private String ip;
@@ -111,7 +111,6 @@ public class Client {
 
         if (socket.isConnected()) {
             System.out.println("Connected.."+socket.isConnected());
-
             //连接成功开启client 线程
             clientThread = new ClientThread(socket);
             clientThread.start();
@@ -128,6 +127,9 @@ public class Client {
     }
 
 
+    /**
+     * 负责连接socket和管理读写线程
+     */
     public class ClientThread extends Thread {
         //app 全局只有一个client，client 线程开启后也创建了唯一的读写线程
         private ClientInputThread inputThread;
@@ -143,13 +145,14 @@ public class Client {
         public void run() {
             inputThread.setStart(true);
             outputThread.setStart(true);
-            outputThread.setMsg("{开始通信}");
+
             inputThread.start();
             outputThread.start();
+
         }
     }
 
-
-
-
+    public Socket getSocket() {
+        return socket;
+    }
 }

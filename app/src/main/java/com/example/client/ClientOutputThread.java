@@ -17,11 +17,12 @@ import java.nio.ByteBuffer;
 public class ClientOutputThread extends Thread {
 
     private Socket socket;
-    private DataOutputStream outputStream;
+    public DataOutputStream outputStream;
     private boolean isStart = true;
     private String msg;
     private OutputStreamWriter streamWriter;
     private static final String TAG = "ClientOutputThread";
+
 
     public ClientOutputThread (Socket socket) {
         this.socket = socket;
@@ -59,8 +60,11 @@ public class ClientOutputThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "run: writeBytes:"+e.getMessage());
+            isStart = false;
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Log.d(TAG, "run: "+e.getMessage());
+            isStart = false;
         }
     }
 

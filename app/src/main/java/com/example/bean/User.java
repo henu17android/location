@@ -5,61 +5,64 @@ package com.example.bean;
  */
 public class User {
 
-    private int id =0;
-    private String phoneNumber = null;
-    private String userName = null;
-    private String studentNumber = null;
-    private String password = null;
+    private int Id =-1;
+    private String PhoneNumber = null;
+    private String UserName = null;
+    private String StudentNumber = null;
+    private String Password = null;
 
 //    public User(String phoneNumber, String password) {
 //        this.phoneNumber = phoneNumber;
 //        this.password = password;
 //    }
 
-    public User(String userName,String password) {
-        this.userName = userName;
-        this.password = password;
+
+    public User(String phoneNumber, String password) {
+        this.PhoneNumber = phoneNumber;
+        this.Password = password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public User () {
 
-    public String getPassword() {
-        return password;
     }
 
     public int getId() {
-        return id;
+        return Id;
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return PhoneNumber;
     }
 
     public String getUserName() {
-        return userName;
+        return UserName;
     }
 
-
     public String getStudentNumber() {
-        return studentNumber;
+        return StudentNumber;
+    }
+
+    public String getPassword() {
+        return Password;
     }
 
     public void setId(int id) {
-        this.id = id;
+        Id = id;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        PhoneNumber = phoneNumber;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        UserName = userName;
     }
 
-
     public void setStudentNumber(String studentNumber) {
-        this.studentNumber = studentNumber;
+        StudentNumber = studentNumber;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
     }
 }

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FF6060</color>
     <color name="colorLightGrey">#EADFDF</color>
     <color name="add_popMenu_textColor">#2c2c2c</color>
     <color name="theme_red">#FF6060</color>

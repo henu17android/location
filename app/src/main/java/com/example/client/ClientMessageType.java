@@ -3,6 +3,7 @@ package com.example.client;
 public enum ClientMessageType {
     REGISTER,
     LOGIN,
-    CREATE_GROUP
+    CREATE_GROUP,
+    HEART_BEAT
 
 }

@@ -32,6 +32,7 @@
                 android:layout_height="35dp"
                 android:text="创建签到群"
                 android:textSize="16sp"
+                android:id="@+id/create_group"
                 android:textColor="@color/add_popMenu_textColor"
                 android:gravity="center_vertical|left"
                 android:layout_marginLeft="8dp"/>
@@ -53,6 +54,7 @@
                 android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:gravity="center_vertical|left"
+                android:id="@+id/add_friend_group"
                 android:text="加好友/群"
                 android:textColor="@color/add_popMenu_textColor"
                 android:layout_marginLeft="8dp"

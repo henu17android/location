@@ -13,7 +13,7 @@
         android:background="@color/toolbar_gray"
         android:layout_marginBottom="32dp"
         app:title="登录"
-       app:titleTextColor="#000"
+        app:titleTextColor="#000"
         />
 
     <EditText
