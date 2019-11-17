@@ -28,7 +28,8 @@ import org.json.JSONException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public SharedPreferences.Editor editor;
+    public SharedPreferences sharedPreferences;
+    private Boolean isLogin;
     private EditText userName;
     private EditText password;
     private TextView phoneRegist;
@@ -48,31 +49,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Log.d("client:id", "LoginActivity "+client);
-        initView();
-        locationApp = (LocationApp)this.getApplication();
-        client = locationApp.getClient();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message message = new Message();
-                if (client.connection()) {
-                    message.what = CONNECTION_SUCCESS;
-                }else {
-                    message.what = CONNECTION_FAIL;
+
+        sharedPreferences = getSharedPreferences("SaveSetting",MODE_PRIVATE);
+        isLogin = sharedPreferences.getBoolean("isLogin",true);
+        if(isLogin){
+            //登录的处理
+            Log.d("client:id", "LoginActivity "+client);
+            initView();
+            locationApp = (LocationApp)this.getApplication();
+            client = locationApp.getClient();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Message message = new Message();
+                    if (client.connection()) {
+                        message.what = CONNECTION_SUCCESS;
+                    }else {
+                        message.what = CONNECTION_FAIL;
+                    }
+                    handler.sendMessage(message);
+
                 }
-                handler.sendMessage(message);
-
-            }
-        }).start();
-
-
+            }).start();
+        }else {
+            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(mainIntent);
+        }
 
     }
 
 
     private void initView(){
-        editor = getSharedPreferences("data",MODE_PRIVATE).edit();
         userName = findViewById(R.id.user_name);
         password = findViewById(R.id.user_password);
         phoneRegist = findViewById(R.id.phone_register);
@@ -95,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 break;
 
+            //TODO 登录成功后，加上 saveIsLogin(false);
             case R.id.login_button :
                  sendLoginMessage(userName.getText().toString(),password.getText().toString());
 
@@ -164,8 +172,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 //                        startActivity(intent);
 //                        finish();
-                        editor.putString("phoneNumber",userName);
-                        editor.apply();
 
                     default:
                 }
@@ -174,6 +180,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 //
+    }
+
+    private void saveIsLogin(boolean islogin){
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLogin",islogin);
+        editor.commit();
     }
 
 
