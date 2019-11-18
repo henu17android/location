@@ -1,5 +1,6 @@
 package com.example.location;
 
+import android.content.Intent;
 import android.media.Image;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -133,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (mCustomPopWindow!=null) {
                     mCustomPopWindow.dissmiss();
+                }
+                switch (v.getId()) {
+                    case R.id.create_group :
+                        Intent intent = new Intent(MainActivity.this,CreateGroupActivity.class);
+                        startActivity(intent);
                 }
             }
         };
