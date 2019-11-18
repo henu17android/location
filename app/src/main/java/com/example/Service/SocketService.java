@@ -24,9 +24,7 @@ import java.util.TimerTask;
  */
 public class SocketService extends Service {
 
-    private LocationApp locationApp;
     private Client client;
-    private boolean isStart = false;
     private Thread connectThread;  //连接线程
     private Handler mHandler = new Handler();
     private TimerTask beatTask;

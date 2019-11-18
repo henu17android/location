@@ -19,7 +19,7 @@ import org.json.JSONException;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected SocketService.SendMessageBinder sendMessageBinder; //唯一的binder 对象
+    protected SocketService.SendMessageBinder sendMessageBinder; //发送消息的binder 对象
 
     protected ServiceConnection connection = new ServiceConnection() { //与服务建立连接
         @Override
@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     String message;  //客户端接收的信息
 
-    //注册全局广播接收器
+    //
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
