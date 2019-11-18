@@ -166,11 +166,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         protected void onDestroy(){
             super.onDestroy();
             SMSSDK.unregisterEventHandler(eh);
-            unbindService(connection);
         }
 
 
-        EventHandler eh = new EventHandler() {
+    EventHandler eh = new EventHandler() {
             @Override
             public void afterEvent(int event, int result, Object data) {
                 Message msg = new Message();

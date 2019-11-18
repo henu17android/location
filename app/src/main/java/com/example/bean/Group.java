@@ -3,49 +3,49 @@ package com.example.bean;
 import java.util.List;
 
 public class Group {
-    int GroupId;
-    String GroupName;
-    String Introduce;
-    int AdminId;
-    List<User> UserList; //成员名单
+    int groupId;
+    String groupName;
+    String introduce;
+    String adminId;
+    List<User> memberList; //成员名单
 
     public int getGroupId() {
-        return GroupId;
+        return groupId;
     }
 
     public String getGroupName() {
-        return GroupName;
+        return groupName;
     }
 
     public String getIntroduce() {
-        return Introduce;
+        return introduce;
     }
 
-    public int getAdminId() {
-        return AdminId;
+    public String getAdminId() {
+        return adminId;
     }
 
-    public List<User> getUserList() {
-        return UserList;
+    public List<User> getMemberList() {
+        return memberList;
     }
 
     public void setGroupId(int groupId) {
-        GroupId = groupId;
+        this.groupId = groupId;
     }
 
     public void setGroupName(String groupName) {
-        GroupName = groupName;
+        this.groupName = groupName;
     }
 
     public void setIntroduce(String introduce) {
-        Introduce = introduce;
+        this.introduce = introduce;
     }
 
-    public void setAdminId(int adminId) {
-        AdminId = adminId;
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
-    public void setUserList(List<User> userList) {
-        UserList = userList;
+    public void setMemberList(List<User> memberList) {
+        this.memberList = memberList;
     }
 }

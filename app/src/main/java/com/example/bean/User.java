@@ -5,64 +5,60 @@ package com.example.bean;
  */
 public class User {
 
-    private int Id =-1;
-    private String PhoneNumber = null;
-    private String UserName = null;
-    private String StudentNumber = null;
-    private String Password = null;
-
-//    public User(String phoneNumber, String password) {
-//        this.phoneNumber = phoneNumber;
-//        this.password = password;
-//    }
+    private int id =-1;
+    private String phoneNumber = null;
+    private String userName = null;
+    private String studentNumber = null;
+    private String password = null;
 
 
     public User(String phoneNumber, String password) {
-        this.PhoneNumber = phoneNumber;
-        this.Password = password;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
     public User () {
 
     }
 
+
     public int getId() {
-        return Id;
+        return id;
     }
 
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public String getStudentNumber() {
-        return StudentNumber;
+        return studentNumber;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     public void setUserName(String userName) {
-        UserName = userName;
+        this.userName = userName;
     }
 
     public void setStudentNumber(String studentNumber) {
-        StudentNumber = studentNumber;
+        this.studentNumber = studentNumber;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 }
