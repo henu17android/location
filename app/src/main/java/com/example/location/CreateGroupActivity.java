@@ -70,10 +70,6 @@ public class CreateGroupActivity extends BaseActivity {
     private void sendMessage(String groupName) {
         Group group = new Group();
         group.setGroupName(groupName);
-        group.setAdminId(33);
-        ClientMessage clientMessage = new ClientMessage();
-        clientMessage.setMessageType(ClientMessageType.CREATE_GROUP);
-        clientMessage.getUser().setId(33);
 
 
     }
