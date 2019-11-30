@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.fragment.SearchResultDialog"
+    app:cardCornerRadius="12dp">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp">
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="150dp">
+          <de.hdodenhof.circleimageview.CircleImageView
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/group_image"
+              android:layout_width="64dp"
+              android:layout_height="64dp"
+              android:src="@drawable/user_image"
+              app:civ_border_width="2dp"
+              app:civ_border_color="#FFF"
+              android:layout_marginLeft="16dp"
+              android:layout_marginTop="32dp"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/group_chat_name"
+              android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+              android:layout_toRightOf="@+id/group_image"
+              android:layout_marginTop="32dp"
+              android:layout_marginLeft="32dp"
+              />
+
+          <Button
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/apply_join"
+              android:background="@drawable/login_button"
+              android:text="申请加群"
+              android:textColor="#FFF"
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentRight="true"
+              android:layout_marginRight="16dp"
+              android:layout_marginBottom="16dp"
+              />
+
+
+
+      </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

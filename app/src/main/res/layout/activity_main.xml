@@ -13,7 +13,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorAccent">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -27,16 +27,17 @@
                     app:civ_border_color="#FFF"
                     android:layout_marginLeft="16dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFF"
-                    android:textSize="18sp"
-                    android:text="签到群"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    />
 
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/search"
+            android:id="@+id/search"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/add_more"
+            android:layout_marginRight="64dp"
+            />
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
@@ -49,7 +50,7 @@
 
 
 
-    <!-- 搜索创建的群和加入的群类似于QQ-->
+    <!-- 搜索创建的群和加入的群类似于QQ
     <android.support.v7.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -61,7 +62,7 @@
         android:inputType="number|text"
         app:queryHint="搜索"
         app:iconifiedByDefault="false"
-        android:background="@drawable/rounded_corner_search_box" />
+        android:background="@drawable/rounded_corner_search_box" />-->
 
 <!--    <EditText-->
 <!--        android:id="@+id/search_editText"-->

@@ -3,24 +3,29 @@ package com.example.Service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.LocationApp;
 import com.example.client.Client;
 import com.example.client.ClientInputThread;
+import com.example.client.ClientMessage;
 import com.example.client.MessageListener;
+import com.example.util.DataUtil;
 
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *
+ * @author qmn
  */
 public class SocketService extends Service {
 
@@ -42,8 +47,8 @@ public class SocketService extends Service {
     public void onCreate() {
         super.onCreate();
         //qmn 自测用
-        client = new Client("192.168.1.174",8096);
-//        client = new Client("106.52.109.122",8098);
+//        client = new Client("192.168.1.174",8096);
+        client = new Client("106.52.109.122",8098);
         Log.d("client:id", "onCreate: "+client);
         initSocket();
     }
@@ -162,11 +167,21 @@ public class SocketService extends Service {
         private void readMessage() {
             client.getClientInputThread().setmMessageListener(new MessageListener() {
                 @Override
-                public void getMessage(String msg) throws JSONException {
-                    Intent intent = new Intent();
-                    intent.setAction("com.location.serverMessage");
-                    intent.putExtra("ServerMessage",msg);
-                    sendBroadcast(intent);
+                public void getMessage(String msg){
+                    //转为客户端消息类
+                  //  String jsonMsg = msg.replace("\\","");
+                    String json = String.valueOf(JSON.parse(msg));
+                    if (msg.length()>0) {
+                        ClientMessage clientMessage = JSONObject.parseObject(msg,ClientMessage.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("message",clientMessage);
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(DataUtil.ACTION);
+                        sendIntent.putExtra("object",clientMessage);
+                        sendBroadcast(sendIntent);
+                    }
+
+
                 }
             });
         }

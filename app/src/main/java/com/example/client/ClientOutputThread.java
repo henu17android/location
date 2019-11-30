@@ -47,7 +47,7 @@ public class ClientOutputThread extends Thread {
 //                    sBuilder.append(msg);
 //                    streamWriter.write(sBuilder.toString());
 //                    streamWriter.flush();
-                    Log.d(TAG, "send: "+msg);
+                    Log.d("message", "send: "+msg);
                     synchronized (this) {
                         wait();   //发送后线程等待
                     }

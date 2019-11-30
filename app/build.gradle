@@ -29,12 +29,12 @@ android {
         }
     }
 }
-apply plugin: 'com.mob.sdk'
-MobSDK{
-    appKey "2c7a50bdaff38"
-    appSecret "e2d19391e641f6671ca1c018b6db41a8"
-    SMSSDK{}
-}
+//apply plugin: 'com.mob.sdk'
+//MobSDK {
+//    appKey "2c7a50bdaff38"
+//    appSecret "e2d19391e641f6671ca1c018b6db41a8"
+//    SMSSDK {}
+//}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
@@ -44,7 +44,10 @@ dependencies {
     implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'com.android.support:design:28.0.0'
-
+    implementation 'com.wenwenwen888:searchbox:1.0.1'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'  //升级support 版本
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
