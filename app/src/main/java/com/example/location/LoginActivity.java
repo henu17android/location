@@ -87,8 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             //TODO 登录成功后，加上 saveIsLogin(false);
             case R.id.login_button :
                  sendLoginMessage(userName.getText().toString(),password.getText().toString());
-
-
+                 break;
             default:
 
         }
@@ -127,11 +126,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * @param msg
      */
     @Override
-    public void getMessage(String msg)  {
+    public void getMessage(String msg) {
         JSONObject jsonObject = null;
         String messageType = null;
         int stateCode = 2;
-        Log.d(TAG, "getMessage: msg"+msg);
+        Log.d(TAG, "getMessage: msg" + msg);
 
         try {
             jsonObject = new JSONObject(msg);
@@ -142,7 +141,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Log.d(TAG, "getMessage: " + e.getMessage());
         }
 
-        if (messageType!=null&&messageType.endsWith("LOGIN_RESULT")) {
+        if (messageType != null && messageType.endsWith("LOGIN")) {
             switch (stateCode) {
                 case 0:
                     Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
@@ -155,17 +154,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 case 1:
                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    saveIsLogin(false);
                     startActivity(intent);
                     break;
 
                 default:
                     Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
             }
-
-
         }
-
-        }
+    }
 
 
     private void saveIsLogin(boolean islogin){

@@ -42,8 +42,8 @@ public class SocketService extends Service {
     public void onCreate() {
         super.onCreate();
         //qmn 自测用
-        client = new Client("192.168.1.174",8096);
-//        client = new Client("106.52.109.122",8098);
+        //client = new Client("192.168.1.174",8096);
+        client = new Client("106.52.109.122",8098);
         Log.d("client:id", "onCreate: "+client);
         initSocket();
     }

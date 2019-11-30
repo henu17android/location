@@ -21,6 +21,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilter("x86")
+            abiFilter("armeabi-v7a")
+        }
     }
     buildTypes {
         release {
@@ -28,12 +32,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            jni.srcDirs = []    //disable automatic ndk-build
+        }
+    }
 }
 apply plugin: 'com.mob.sdk'
-MobSDK{
+MobSDK {
     appKey "2c7a50bdaff38"
     appSecret "e2d19391e641f6671ca1c018b6db41a8"
-    SMSSDK{}
+    SMSSDK {}
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -44,8 +54,10 @@ dependencies {
     implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'com.android.support:design:28.0.0'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation files('libs/BaiduLBS_Android.jar')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
 }

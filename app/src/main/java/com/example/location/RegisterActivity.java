@@ -140,7 +140,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             Log.d(TAG, "getMessage: " + e.getMessage());
         }
 
-        if (messageType != null && messageType.endsWith("REGISTER_RESULT")) {
+        if (messageType != null && messageType.endsWith("REGISTER")) {
             switch (id) {
                 case 0:
                     Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();

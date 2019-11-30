@@ -1,13 +1,13 @@
 package com.example.location;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.example.adapter.GroupExpandListAdapter;
@@ -50,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGroupList.setAdapter(mAdapter);
         mSearchView = findViewById(R.id.searchView);
 
+        Button btnSignIn = findViewById(R.id.sign_in);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,SetSignInActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     /**
