@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,SetSignInActivity.class);
+                Intent i = new Intent(MainActivity.this,GetSignMessageActivity.class);
                 startActivity(i);
             }
         });

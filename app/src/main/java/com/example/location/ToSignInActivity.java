@@ -315,7 +315,7 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
     }
     @Override
     public void initService() {
-        Intent bindIntent = new Intent(LoginActivity.this, SocketService.class);
+        Intent bindIntent = new Intent(ToSignInActivity.this, SocketService.class);
         bindService(bindIntent, connection, BIND_AUTO_CREATE);
     }
 

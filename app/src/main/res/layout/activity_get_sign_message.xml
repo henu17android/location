@@ -5,6 +5,7 @@
     android:orientation="vertical" >
 
     <com.baidu.mapapi.map.MapView
+        android:id="@+id/map_view"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="240dp">

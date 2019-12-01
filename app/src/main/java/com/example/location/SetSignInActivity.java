@@ -305,14 +305,14 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
         mMapView.onResume();
         super.onResume();
         //为系统的方向传感器注册监听器
-        mSensorManager.registerListener((SensorEventListener) this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     protected void onStop() {
         //取消注册传感器监听
-        mSensorManager.unregisterListener((SensorEventListener) this);
+        mSensorManager.unregisterListener(this);
         super.onStop();
     }
 
