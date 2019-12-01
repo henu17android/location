@@ -62,9 +62,14 @@
         android:inputType="number|text"
         app:queryHint="搜索"
         app:iconifiedByDefault="false"
-        android:background="@drawable/rounded_corner_search_box" />-->
+        android:background="@drawable/rounded_corner_search_box" />
 
-<!--    <EditText-->
+         <Button
+             android:id="@+id/sign_in"
+             android:text="查看签到"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" />
+<!-    <EditText-->
 <!--        android:id="@+id/search_editText"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

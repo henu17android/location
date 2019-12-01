@@ -92,6 +92,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
 
     }
 
+        Button btnSignIn = findViewById(R.id.sign_in);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,GetSignMessageActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    /**
+     * TODO 在输入时直接对本地数据库（创建的群和加入的群）进行检索
+     * @param newText id或name
+     * @return
+     */
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(TextUtils.isEmpty(newText))
+        { }
+        else
+        { }
+        return true;
+    }
+
+    //同onQueryTextChange的else
     @Override
     protected void onResume() {
 

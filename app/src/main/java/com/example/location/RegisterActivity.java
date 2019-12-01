@@ -2,6 +2,8 @@ package com.example.location;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
