@@ -81,7 +81,7 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
     boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
 
-    int groupId;
+    String groupId;
     String adminId;
     GroupSignInMessage adminGroupSignInMessage;
 
@@ -92,7 +92,7 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
         setContentView(R.layout.activity_set_sign_in);
 
         Intent intent = getIntent();
-        groupId = intent.getIntExtra("groupId" ,-1);
+        groupId = intent.getStringExtra("groupId" );
         adminId = intent.getStringExtra("adminId");
 
         findView();

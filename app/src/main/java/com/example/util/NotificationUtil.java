@@ -18,6 +18,7 @@ import com.example.location.R;
 
 /**
  * 通知 兼容写法
+ * @author 祁好燃
  */
 public class NotificationUtil extends ContextWrapper {
 

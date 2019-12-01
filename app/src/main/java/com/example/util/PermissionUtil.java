@@ -9,6 +9,7 @@ import android.util.Log;
 
 /**
  * 权限管理
+ * @author 祁好燃
  */
 public class PermissionUtil {
     private static final String TAG = "PermissionUtil";

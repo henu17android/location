@@ -39,6 +39,7 @@ import com.example.Service.SocketService;
 import com.example.adapter.SimpleSignInRecordAdapter;
 import com.example.bean.Group;
 import com.example.bean.GroupSignInMessage;
+import com.example.client.ClientMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +70,7 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
     private float mCurrentAccracy;
     BaiduMap mBaiduMap;
 
-    int groupId;
+    String groupId;
     String adminId;
     boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
@@ -86,7 +87,7 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
         setContentView(R.layout.activity_get_sign_message);
 
         Intent intent = getIntent();
-        groupId = intent.getIntExtra("groupId",-1);
+        groupId = intent.getStringExtra("groupId");
         adminId = intent.getStringExtra("adminId");
         findView();
         init();
@@ -272,16 +273,21 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
         bindService(bindIntent, connection, BIND_AUTO_CREATE);
     }
 
-
     @Override
-    public void getMessage(String msg){
-        JSONObject jsonObject;
-        String messageType;
-        try {
-            jsonObject = new JSONObject(msg);
-            messageType = jsonObject.getString("messageType");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void getMessage(ClientMessage msg) {
+
     }
+
+
+//    @Override
+//    public void getMessage(String msg){
+//        JSONObject jsonObject;
+//        String messageType;
+//        try {
+//            jsonObject = new JSONObject(msg);
+//            messageType = jsonObject.getString("messageType");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

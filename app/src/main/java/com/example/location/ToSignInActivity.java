@@ -35,6 +35,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.Service.SocketService;
 import com.example.bean.GroupSignInMessage;
+import com.example.client.ClientMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +67,7 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
 
     String originatorId;    //发起人Id
     int messageId;
-    int groupId;
+    String groupId;
     String adminId;
     boolean mIsLegal;   //是否在指定签到范围
     boolean isFirstLoc = true;
@@ -82,7 +83,7 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
 
         Intent intent = getIntent();
         messageId = intent.getIntExtra("messgaeId",-1);
-        groupId = intent.getIntExtra("groupId",-1);
+        groupId = intent.getStringExtra("groupId");
         adminId = intent.getStringExtra("adminId");
         findView();
         init();
@@ -319,23 +320,28 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
         bindService(bindIntent, connection, BIND_AUTO_CREATE);
     }
 
-
-    /**
-     * 接收消息并做处理
-     * @param msg
-     */
     @Override
-    public void getMessage(String msg) {
-        JSONObject jsonObject;
-        String messageType = null;
-        try {
-            jsonObject = new JSONObject(msg);
-            messageType = jsonObject.getString("messageType");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (messageType != null && messageType.endsWith("GET_SINGLE_SIGNIN_RECORD")) {
-            List<GroupSignInMessage> recordList = new ArrayList<>();
-        }
+    public void getMessage(ClientMessage msg) {
+
     }
+
+
+//    /**
+//     * 接收消息并做处理
+//     * @param msg
+//     */
+//    @Override
+//    public void getMessage(String msg) {
+//        JSONObject jsonObject;
+//        String messageType = null;
+//        try {
+//            jsonObject = new JSONObject(msg);
+//            messageType = jsonObject.getString("messageType");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        if (messageType != null && messageType.endsWith("GET_SINGLE_SIGNIN_RECORD")) {
+//            List<GroupSignInMessage> recordList = new ArrayList<>();
+//        }
+//    }
 }
