@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -47,6 +48,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 某一次签到结果
+ */
 public class GetSignMessageActivity extends BaseActivity implements SensorEventListener {
 
     private int PERMISSION_REQUEST = 127;
@@ -133,7 +137,7 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
         Group group = new Group();
         group.setAdminId(adminId);
         group.setGroupId(groupId);
-        //TODO 向服务器发送申请群成员签到情况表
+
 
     }
 

@@ -17,8 +17,8 @@ public class ClientMessage implements Serializable {
     private boolean isSuccess;
 
     private String phoneNumber;
-    private List<Group> create_groups;  //创建的组
-    private List<Group> join_groups;   //加入的组
+    private List<Group> createGroups;  //创建的组
+    private List<Group> joinGroups;   //加入的组
 
     private String groupId; //传输组Id
     private int stateCode;  //错误状态码
@@ -47,24 +47,38 @@ public class ClientMessage implements Serializable {
         return groupId;
     }
 
-    public void setUserId(String userId) {
-        this.phoneNumber = userId;
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public List<Group> getCreate_groups() {
-        return create_groups;
+    public List<Group> getCreateGroups() {
+        return createGroups;
     }
 
-    public List<Group> getJoin_groups() {
-        return join_groups;
+    public List<Group> getJoinGroups() {
+        return joinGroups;
     }
 
-    public void setCreate_groups(List<Group> create_groups) {
-        this.create_groups = create_groups;
+    public List<User> getMemberList() {
+        return memberList;
     }
 
-    public void setJoin_groups(List<Group> join_groups) {
-        this.join_groups = join_groups;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setCreateGroups(List<Group> createGroups) {
+        this.createGroups = createGroups;
+    }
+
+    public void setJoinGroups(List<Group> joinGroups) {
+        this.joinGroups = joinGroups;
+    }
+
+    public void setMemberList(List<User> memberList) {
+        this.memberList = memberList;
     }
 
     public void setGroupId(String groupId) {
@@ -101,13 +115,5 @@ public class ClientMessage implements Serializable {
 
     public void setSuccess(boolean success) {
         isSuccess = success;
-    }
-
-    @Override
-    public String toString() {
-        return "ClientMessage{"+
-                "messageType='"+messageType+'\''+
-                ",user="+user+'\''+
-                ",group"+group+'\''+"}";
     }
 }

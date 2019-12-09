@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
     @Override
     protected void onResume() {
 
-        Group group = (Group)getIntent().getSerializableExtra("create_group");
+        Group group = (Group)getIntent().getSerializableExtra("group_toolbar");
         if (group!=null) {
             createdGroup.add(group);
         }
@@ -177,7 +177,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Group group = groups.get(groupPosition).get(childPosition);
                 Intent intent = new Intent(MainActivity.this,GroupActivity.class);
+                boolean isCreate;
+                if (groupPosition==0) {
+                    isCreate = true;
+                }else {
+                    isCreate = false;
+                }
                 intent.putExtra("group_id",group.getGroupId());
+                intent.putExtra("isCreate",isCreate);
+                intent.putExtra("group_name",group.getGroupName());
                 startActivity(intent);
                 return true;
             }
@@ -260,8 +268,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
     public void getMessage(ClientMessage msg)  {
         switch (msg.getMessageType()) {
             case GET_GROUPS:
-                createdGroup = msg.getCreate_groups();
-                joinedGroup = msg.getJoin_groups();
+                createdGroup = msg.getCreateGroups();
+                joinedGroup = msg.getJoinGroups();
                 break;
 
             case SEARCH_GROUP:
@@ -278,7 +286,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 }
                 break;
 
-            case RECEIVE_MEMBER:
+            case REQUEST_RECEIVE_MEMBER:
                 NotificationUtil notification = new NotificationUtil(MainActivity.this);
                 notification.sendNotification("Location申请",msg.getUser().getUserName()+
                         "申请加入群"+msg.getGroup().getGroupName());

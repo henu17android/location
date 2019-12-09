@@ -48,8 +48,8 @@ public class SocketService extends Service {
     public void onCreate() {
         super.onCreate();
         //qmn 自测用
-        client = new Client("192.168.1.174",8096);
-//        client = new Client("106.52.109.122",8098);
+//        client = new Client("192.168.1.174",8096);
+        client = new Client("106.52.109.122",8098);
         Log.d("client:id", "onCreate: "+client);
         initSocket();
     }
@@ -171,14 +171,14 @@ public class SocketService extends Service {
                 public void getMessage(String msg){
                     //转为客户端消息类
                   //  String jsonMsg = msg.replace("\\","");
-                    String json = String.valueOf(JSON.parse(msg));
+                    Log.d("message", "getMessage: "+msg);
                     if (msg.length()>0) {
                         ClientMessage clientMessage = JSONObject.parseObject(msg,ClientMessage.class);
 //                        Bundle bundle = new Bundle();
 //                        bundle.putSerializable("message",clientMessage);
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(DataUtil.ACTION);
-                        sendIntent.putExtra("object",clientMessage);
+                        sendIntent.putExtra("object",msg);
                         sendBroadcast(sendIntent);
                     }
 

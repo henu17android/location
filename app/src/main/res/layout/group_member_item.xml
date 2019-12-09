@@ -24,6 +24,19 @@
         android:id="@+id/member_name"
         android:layout_marginLeft="16dp"
         android:text="用户昵称"/>
-    
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="16dp"
+        android:text="签到成功"
+        android:id="@+id/sign_in_result"
+        android:textColor="@color/colorPrimary"/>
     
 </LinearLayout>

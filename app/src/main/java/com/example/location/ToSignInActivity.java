@@ -43,6 +43,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 签到页面
+ */
 public class ToSignInActivity extends BaseActivity implements View.OnClickListener,SensorEventListener {
 
     private int PERMISSION_REQUEST = 127;

@@ -11,4 +11,5 @@
     <color name="white">#ffffff</color>
     <color name="widget_dark_blue_color">#1fa2ff</color>
     <color name="line_light_blue_color">#FFE5E5E5</color>
+    <color name="text_gray">#808080</color>
 </resources>

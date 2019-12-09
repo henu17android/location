@@ -49,6 +49,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * 发起签到
+ */
 public class SetSignInActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener{
 
     private int PERMISSION_REQUEST = 127;

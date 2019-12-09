@@ -64,6 +64,7 @@ public class CreateGroupActivity extends BaseActivity {
                     createGroup.setAdminId("123456789");
                     clientMessage.setGroup(createGroup);
                     sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
+                    Toast.makeText(CreateGroupActivity.this,"创建信息已发送",Toast.LENGTH_SHORT).show();
                 }
 
         }
@@ -82,8 +83,8 @@ public class CreateGroupActivity extends BaseActivity {
             Toast.makeText(CreateGroupActivity.this,"创建群成功",Toast.LENGTH_LONG).show();
             final Intent intent = new Intent(CreateGroupActivity.this,MainActivity.class);
 //            Bundle bundle = new Bundle();
-//            bundle.putSerializable("create_group",createGroup);
-            intent.putExtra("create_group",createGroup);
+//            bundle.putSerializable("group_toolbar",createGroup);
+            intent.putExtra("group_toolbar",createGroup);
             startActivity(intent);
 
             Timer timer = new Timer();
