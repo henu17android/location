@@ -272,12 +272,6 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
     }
 
     @Override
-    public void initService() {
-        Intent bindIntent = new Intent(GetSignMessageActivity.this, SocketService.class);
-        bindService(bindIntent, connection, BIND_AUTO_CREATE);
-    }
-
-    @Override
     public void getMessage(ClientMessage msg) {
 
     }

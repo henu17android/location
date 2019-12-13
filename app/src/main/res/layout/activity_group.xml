@@ -13,7 +13,9 @@
         android:background="@color/colorAccent"
         android:elevation="12dp"
         android:id="@+id/group_tool_bar"
-        app:titleTextColor="#000"
+        app:titleTextColor="#fff"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
         />
 
     <FrameLayout

@@ -37,7 +37,16 @@ public class GroupActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+
         }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         isCreate = getIntent().getBooleanExtra("isCreate",false);
@@ -67,7 +76,7 @@ public class GroupActivity extends AppCompatActivity {
         if (isCreate) {
             memberItem.setVisible(true);
             Bundle bundle = new Bundle();
-            bundle.putString("group_id",groupId); //将群信息传递给fragment
+            bundle.putString("group_id",groupId); //将群id// 传递给fragment
             CreatedFragment fragment = new CreatedFragment();
             fragment.setArguments(bundle);
             replaceFragment(fragment);

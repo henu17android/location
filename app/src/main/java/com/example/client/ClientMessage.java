@@ -10,7 +10,7 @@ import java.util.List;
 
 //客户端发送消息
 public class ClientMessage implements Serializable {
-    MessageType messageType; //
+    private MessageType messageType; //
     private User user;
     private Group group;
     @JSONField(name = "isSuccess")
@@ -23,6 +23,15 @@ public class ClientMessage implements Serializable {
     private String groupId; //传输组Id
     private int stateCode;  //错误状态码
     private List<User> memberList; //组成员
+    private String to;
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
 
     public ClientMessage() {
         this.phoneNumber = DataUtil.USER_NUMBER;  //构造函数中默认添加当前用户的号码

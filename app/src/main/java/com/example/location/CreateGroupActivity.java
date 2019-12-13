@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.Service.SocketService;
 import com.example.bean.Group;
 import com.example.client.ClientMessage;
+import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.DataUtil;
 
@@ -39,8 +41,14 @@ public class CreateGroupActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
         }
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -63,7 +71,8 @@ public class CreateGroupActivity extends BaseActivity {
 //                    createGroup.setAdminId(DataUtil.USER_NUMBER);
                     createGroup.setAdminId("123456789");
                     clientMessage.setGroup(createGroup);
-                    sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
+                   // sendMessageBinder.sendMessage(JSON.toJSONString());
+                    MessagePostPool.sendMessage(clientMessage);
                     Toast.makeText(CreateGroupActivity.this,"创建信息已发送",Toast.LENGTH_SHORT).show();
                 }
 
@@ -71,11 +80,7 @@ public class CreateGroupActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    protected void initService() {
-        Intent bindIntent = new Intent(CreateGroupActivity.this,SocketService.class);
-        bindService(bindIntent,connection,BIND_AUTO_CREATE);
-    }
+
 
     @Override
     public void getMessage(ClientMessage msg){

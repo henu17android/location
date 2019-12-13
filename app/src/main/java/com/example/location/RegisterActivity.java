@@ -16,9 +16,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.example.LocationApp;
 import com.example.Service.SocketService;
-import com.example.client.Client;
 import com.example.bean.User;
 import com.example.client.ClientMessage;
+import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.DataUtil;
 
@@ -35,7 +35,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText user_pwd;
     private EditText user_pwd_twice;
     private User user;
-    private Client client;
     private LocationApp locationApp;
     private Context context;
     private boolean codeIsRight;
@@ -111,17 +110,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         ClientMessage clientMessage  = new ClientMessage();
         clientMessage.setUser(user);
         clientMessage.setMessageType(MessageType.REGISTER);
-
-        String message = JSONObject.toJSONString(clientMessage);
-        sendMessageBinder.sendMessage(message);
+     //   String message = JSONObject.toJSONString(clientMessage);
+        MessagePostPool.sendMessage(clientMessage);
     }
 
-
-    @Override
-    protected void initService() {
-        Intent bindIntent = new Intent(RegisterActivity.this,SocketService.class);
-        bindService(bindIntent,connection,BIND_AUTO_CREATE);
-    }
 
 
 

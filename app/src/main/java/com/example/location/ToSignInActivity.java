@@ -317,11 +317,6 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
         //在地图上添加
         mBaiduMap.addOverlay(adminLocation);
     }
-    @Override
-    public void initService() {
-        Intent bindIntent = new Intent(ToSignInActivity.this, SocketService.class);
-        bindService(bindIntent, connection, BIND_AUTO_CREATE);
-    }
 
     @Override
     public void getMessage(ClientMessage msg) {

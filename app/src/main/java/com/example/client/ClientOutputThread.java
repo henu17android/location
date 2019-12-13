@@ -14,6 +14,8 @@ import java.nio.ByteBuffer;
  * client 写线程类
  * @author qmn
  */
+
+/*
 public class ClientOutputThread extends Thread {
 
     private Socket socket;
@@ -96,4 +98,4 @@ public class ClientOutputThread extends Thread {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-}
+}*/

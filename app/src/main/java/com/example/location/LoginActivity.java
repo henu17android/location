@@ -16,8 +16,8 @@ import org.json.JSONObject;
 import com.example.LocationApp;
 import com.example.Service.SocketService;
 import com.example.bean.User;
-import com.example.client.Client;
 import com.example.client.ClientMessage;
+import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.DataUtil;
 
@@ -32,7 +32,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView forgetPWD;
     private Button loginButton;
     private LocationApp locationApp;
-    private Client client;
     private String serverMessage;
     private static final String TAG = "LoginActivity";
     private static final int CONNECTION_SUCCESS = 1;
@@ -50,17 +49,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         sharedPreferences = getSharedPreferences("SaveSetting",MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin",false);
 
-        if(isLogin){
-            //登录的处理
-            Log.d("client:id", "LoginActivity "+client);
-            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
-            String number = sharedPreferences.getString("user_phone",null);
-            DataUtil.USER_NUMBER = number;
-
-            startActivity(mainIntent);
-        }else {
+//        if(isLogin){
+//            //登录的处理
+//            Log.d("client:id", "LoginActivity "+client);
+//            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+//            String number = sharedPreferences.getString("user_phone",null);
+//            DataUtil.USER_NUMBER = number;
+//
+//            startActivity(mainIntent);
+//        }else {
             initView();
-        }
+//        }
 
     }
 
@@ -109,18 +108,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             clientMessage.setUser(user);
             clientMessage.setMessageType(MessageType.LOGIN);
             String jsonString = JSON.toJSONString(clientMessage);
-            sendMessageBinder.sendMessage(jsonString);  //通过binder 发送数据
-            Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(message));
+           //sendMessageBinder.sendMessage(jsonString);  //通过binder 发送数据
+            MessagePostPool.sendMessage(clientMessage);
+            Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(clientMessage));
 
         }
     }
 
-
-    @Override
-    public void initService() {
-        Intent bindIntent = new Intent(LoginActivity.this, SocketService.class);
-        bindService(bindIntent, connection, BIND_AUTO_CREATE);
-    }
 
 
     /**

@@ -6,12 +6,17 @@ import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.example.Service.SocketService;
-import com.example.client.Client;
 
 public class LocationApp extends Application {
 
+
+
+
     @Override
     public void onCreate() {
+
+
+//        client = new Client("106.52.109.122",8098);
         super.onCreate();
         Log.d("locationapp", "onCreate: ");
         //百度地图的使用

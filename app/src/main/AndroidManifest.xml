@@ -41,7 +41,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity" >
+
+        </activity>
+
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".FindPwdActivity" />
@@ -55,12 +58,10 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".SearchActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".ToSignInActivity" />
         <activity android:name=".SetSignInActivity" />
         <activity android:name=".GetSignMessageActivity"></activity>
-        <activity android:name=".GroupActivity" />
         <activity android:name=".GroupMemberActivity">
         </activity>
     </application>
