@@ -21,10 +21,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilter("x86")
-            abiFilter("armeabi-v7a")
-        }
+//        ndk {
+//            abiFilter("x86")
+//            abiFilter("armeabi-v7a")
+//        }
     }
     buildTypes {
         release {
@@ -39,12 +39,12 @@ android {
         }
     }
 }
-//apply plugin: 'com.mob.sdk'
-//MobSDK {
-//    appKey "2c7a50bdaff38"
-//    appSecret "e2d19391e641f6671ca1c018b6db41a8"
-//    SMSSDK {}
-//}
+apply plugin: 'com.mob.sdk'
+MobSDK {
+    appKey "2c7a50bdaff38"
+    appSecret "e2d19391e641f6671ca1c018b6db41a8"
+    SMSSDK {}
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
@@ -66,5 +66,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation group: "net.sourceforge.jexcelapi", name: "jxl", version: "2.6.12"
 
+    //小圆圈
+    implementation 'com.wang.avi:library:2.1.3'
 }

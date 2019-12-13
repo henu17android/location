@@ -9,10 +9,14 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PersistableBundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.example.LocationApp;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.Service.SocketService;
@@ -70,6 +74,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LocationApp application = (LocationApp)getApplication();
+        application.getActivityUtil().pushActivity(this);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        LocationApp application = (LocationApp)getApplication();
+        application.getActivityUtil().popActivity(this);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter();
@@ -78,7 +97,6 @@ public abstract class BaseActivity extends AppCompatActivity {
        // bindService();
         registerReceiver(receiver,filter);  //活动启动时注册广播
       //  initService();  //绑定服务
-
 
     }
 
@@ -94,7 +112,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         unregisterReceiver(receiver);  //活动停止时解绑
 
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

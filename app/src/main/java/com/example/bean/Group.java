@@ -8,7 +8,7 @@ import java.util.List;
 public class Group implements Serializable {
     private int Id;
     @JSONField(name = "GroupId")
-    private String groupId;
+    private int groupId;
     @JSONField(name = "GroupName")
     private String groupName;
     @JSONField(name = "Introduce")
@@ -32,7 +32,7 @@ public class Group implements Serializable {
         Id = id;
     }
 
-    public String getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
@@ -50,7 +50,8 @@ public class Group implements Serializable {
 
 
 
-    public void setGroupId(String groupId) {
+
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 

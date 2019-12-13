@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,18 +41,21 @@ import com.baidu.mapapi.model.LatLng;
 import com.example.Service.SocketService;
 import com.example.adapter.SimpleSignInRecordAdapter;
 import com.example.bean.Group;
+import com.example.bean.GroupMessage;
 import com.example.bean.GroupSignInMessage;
+import com.example.client.ClientMessage;
+import com.example.client.MessageType;
+import com.example.util.TimeTransform;
 import com.example.client.ClientMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-/**
- * 某一次签到结果
- */
 public class GetSignMessageActivity extends BaseActivity implements SensorEventListener {
 
     private int PERMISSION_REQUEST = 127;
@@ -74,7 +79,8 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
     private float mCurrentAccracy;
     BaiduMap mBaiduMap;
 
-    String groupId;
+    int messageId;
+    int groupId;
     String adminId;
     boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
@@ -91,10 +97,23 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
         setContentView(R.layout.activity_get_sign_message);
 
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId");
+        messageId = intent.getIntExtra("messageId",1);
+        groupId = intent.getIntExtra("groupId",-1);
         adminId = intent.getStringExtra("adminId");
         findView();
         init();
+
+        Button 获得签到记录 = findViewById(R.id.获得);
+        获得签到记录.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                messageId = 1;
+                ClientMessage clientMessage = new ClientMessage();
+                clientMessage.setMessageType(MessageType.GET_SINGLE_SIGNIN_RECORD);
+                clientMessage.setMessageId(messageId);
+                clientMessage.setPhoneNumber("17625004818");
+            }
+        });
     }
 
     void findView(){
@@ -137,8 +156,12 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
         Group group = new Group();
         group.setAdminId(adminId);
         group.setGroupId(groupId);
+        //TODO 向服务器发送申请群成员签到情况表
 
-
+        ClientMessage clientMessage = new ClientMessage();
+        clientMessage.setMessageType(MessageType.GET_SINGLE_SIGNIN_RECORD);
+        clientMessage.setMessageId(messageId);
+        //sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
     }
 
     @Override
@@ -270,22 +293,31 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
             }
         }
     }
-
     @Override
     public void getMessage(ClientMessage msg) {
-
+        if(msg != null){
+            if(msg.getMessageType().equals(MessageType.GET_SINGLE_SIGNIN_RECORD)){
+               List<GroupSignInMessage> recordList;
+               recordList = msg.getSignInMessages();
+               int number = 0;
+               adminGroupSignInMessage = new GroupSignInMessage();
+               mBaiduMap.clear();
+               for(int i=0; i<recordList.size(); i++){
+                   if(recordList.get(i).getType() == 2){
+                       number++;
+                       mGroupSignRecordList.add(0,recordList.get(i));
+                       setMarker(recordList.get(i).getLatitude(),recordList.get(i).getLongitude());
+                   }else if(recordList.get(i).getType() == 1){
+                       adminGroupSignInMessage = recordList.get(i);
+                       setMarker(adminGroupSignInMessage.getLatitude(),adminGroupSignInMessage.getLongitude());
+                   }
+               }
+               mSimpleSignInRecordAdapter.notifyDataSetChanged();
+               String endTime = TimeTransform.stampToTime(adminGroupSignInMessage.getEndTime());
+               mTvEndTime.setText(endTime);
+               mTvNumber.setText(String.valueOf(number));
+            }
+        }
     }
 
-
-//    @Override
-//    public void getMessage(String msg){
-//        JSONObject jsonObject;
-//        String messageType;
-//        try {
-//            jsonObject = new JSONObject(msg);
-//            messageType = jsonObject.getString("messageType");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

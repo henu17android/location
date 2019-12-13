@@ -13,6 +13,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -40,7 +42,10 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.bean.Group;
+import com.example.bean.GroupMessage;
 import com.example.bean.GroupSignInMessage;
+import com.example.client.ClientMessage;
+import com.example.client.MessageType;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -49,10 +54,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
-/**
- * 发起签到
- */
-public class SetSignInActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener{
+public class SetSignInActivity extends BaseActivity implements SensorEventListener, View.OnClickListener{
 
     private int PERMISSION_REQUEST = 127;
     private int GPS_CODE = 1315;
@@ -84,9 +86,8 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
     boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
 
-    String groupId;
+    int groupId;
     String adminId;
-    GroupSignInMessage adminGroupSignInMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
         setContentView(R.layout.activity_set_sign_in);
 
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId" );
+        groupId = intent.getIntExtra("groupId",-1);
         adminId = intent.getStringExtra("adminId");
 
         findView();
@@ -185,9 +186,9 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
                 AlertTimePickerDialog();
                 break;
             case R.id.tv_ok:
-                Group group = new Group();
-                group.setGroupId(groupId);
-                group.setAdminId(adminId);
+                GroupMessage groupMessage = new GroupMessage();
+                groupMessage.setGroupId(groupId);
+                groupMessage.setFromId(adminId);
                 GroupSignInMessage groupSignInMessage = new GroupSignInMessage();
                 groupSignInMessage.setOriginatorId(adminId);
                 groupSignInMessage.setType(1);
@@ -199,7 +200,10 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
                 groupSignInMessage.setLatitude(mCurrentLat);
                 groupSignInMessage.setLongitude(mCurrentLon);
                 groupSignInMessage.setRegion(Integer.parseInt(mEtDistance.getText().toString()));
-                //TODO　将消息发到服务器端
+                ClientMessage clientMessage = new ClientMessage();
+                clientMessage.setMessageType(MessageType.SIGN_IN);
+                clientMessage.setGroupMessage(groupMessage);
+                clientMessage.setGroupSignInMessage(groupSignInMessage);
                 finish();
                 break;
             default:
@@ -285,16 +289,6 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    void setMarker(double lat, double lon){
-        mBaiduMap.clear();
-        LatLng point1 = new LatLng(lat, lon);
-        View mView = LayoutInflater.from(SetSignInActivity.this).inflate(R.layout.layout_baidu_map_item,null);
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(mView);
-        OverlayOptions adminLocation = new MarkerOptions().position(point1)
-                .icon(bitmapDescriptor).zIndex(15).draggable(true);
-        mBaiduMap.addOverlay(adminLocation);
     }
 
     @Override
@@ -436,5 +430,11 @@ public class SetSignInActivity extends AppCompatActivity implements SensorEventL
         }
         result = hourString + ":" + minuteString;
         return result;
+    }
+
+
+    @Override
+    public void getMessage(ClientMessage msg) {
+
     }
 }

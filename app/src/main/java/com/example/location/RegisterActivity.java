@@ -22,8 +22,8 @@ import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.DataUtil;
 
-//import cn.smssdk.EventHandler;
-//import cn.smssdk.SMSSDK;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
@@ -49,7 +49,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_identify);
 
         initView();
-//        SMSSDK.registerEventHandler(eh);
+        SMSSDK.registerEventHandler(eh);
     }
 
     private void initView() {
@@ -74,29 +74,29 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if(!judgePhoneNums(user_phone)){
                     return;
                 }
-//                SMSSDK.getVerificationCode("86",user_phone);
+                SMSSDK.getVerificationCode("86",user_phone);
                 getCode.setClickable(false);
                 getCode.setText("重新发送("+i+")");
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        for(;i>0;i--){
-//                            handler.sendEmptyMessage(-9);
-//                            if(i<=0)
-//                                break;
-//                            try {
-//                                Thread.sleep(1000);
-//                            }catch (InterruptedException ie){
-//                                ie.printStackTrace();
-//                            }
-//                        }
-//                        handler.sendEmptyMessage(-8);
-//                    }
-//                }).start();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(;i>0;i--){
+                            handler.sendEmptyMessage(-9);
+                            if(i<=0)
+                                break;
+                            try {
+                                Thread.sleep(1000);
+                            }catch (InterruptedException ie){
+                                ie.printStackTrace();
+                            }
+                        }
+                        handler.sendEmptyMessage(-8);
+                    }
+                }).start();
                 break;
 
             case R.id.confirm_submit:
-//                SMSSDK.submitVerificationCode("86",user_phone,strCode);
+                SMSSDK.submitVerificationCode("86",user_phone,strCode);
                 user = new User(user_tele.getText().toString(), user_pwd.getText().toString());
                 Log.d(TAG, "onClick: "+user_tele.getText().toString()+user_pwd.getText().toString());
                 sendRegister(user);
@@ -147,73 +147,73 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         @Override
         protected void onDestroy(){
             super.onDestroy();
-//            SMSSDK.unregisterEventHandler(eh);
+            SMSSDK.unregisterEventHandler(eh);
         }
 
 
-//    EventHandler eh = new EventHandler() {
-//            @Override
-//            public void afterEvent(int event, int result, Object data) {
-//                Message msg = new Message();
-//                msg.arg1 = event;
-//                msg.arg2 = result;
-//                msg.obj = data;
-//                handler.sendMessage(msg);
-//            }
-//        };
-//
-//        Handler handler = new Handler() {
-//            public void handleMessage(Message msg) {
-//                if (msg.what == -9) {
-//                    getCode.setText("重新发送(" + i + ")");
-//                } else if (msg.what == -8) {
-//                    getCode.setText("获取验证码");
-//                    getCode.setClickable(true);
-//                    i = 60;
-//                } else {
-//                    int event = msg.arg1;
-//                    int result = msg.arg2;
-//                    Object data = msg.obj;
-//                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-//                        if (result == SMSSDK.RESULT_COMPLETE) {
-//                            Toast.makeText(context, "提交验证码成功",
-//                                    Toast.LENGTH_LONG).show();
-//                        } else {
-//                            Toast.makeText(context, "验证码错误",
-//                                    Toast.LENGTH_LONG).show();
-//                        }
-//                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-//                        if (result == SMSSDK.RESULT_COMPLETE) {
-//                            Toast.makeText(context, "正在获取验证码",
-//                                    Toast.LENGTH_LONG).show();
-//                        } else {
-//                            Toast.makeText(context, "验证码获取失败",
-//                                    Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                }
-//            }
-//        };
+    EventHandler eh = new EventHandler() {
+            @Override
+            public void afterEvent(int event, int result, Object data) {
+                Message msg = new Message();
+                msg.arg1 = event;
+                msg.arg2 = result;
+                msg.obj = data;
+                handler.sendMessage(msg);
+            }
+        };
+
+        Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+                if (msg.what == -9) {
+                    getCode.setText("重新发送(" + i + ")");
+                } else if (msg.what == -8) {
+                    getCode.setText("获取验证码");
+                    getCode.setClickable(true);
+                    i = 60;
+                } else {
+                    int event = msg.arg1;
+                    int result = msg.arg2;
+                    Object data = msg.obj;
+                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                        if (result == SMSSDK.RESULT_COMPLETE) {
+                            Toast.makeText(context, "提交验证码成功",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "验证码错误",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                        if (result == SMSSDK.RESULT_COMPLETE) {
+                            Toast.makeText(context, "正在获取验证码",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "验证码获取失败",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        };
 
         /**
          * 判断手机号码是否合理
          */
         private boolean judgePhoneNums (String phoneNums){
-//            if (isMatchLength(phoneNums, 11) && isMobileNO(phoneNums)) {
-//                return true;
-//            }
+            if (isMatchLength(phoneNums, 11) && isMobileNO(phoneNums)) {
+                return true;
+            }
             Toast.makeText(this, "手机号输入有误！", Toast.LENGTH_SHORT).show();
             return false;
         }
         /**
          * 判断一个字符串的位数
          */
-//        private static boolean isMatchLength (String str,int length){
-//            if (str.isEmpty())
-//                return false;
-//            else
-//                return str.length() == length ? true : false;
-//        }
+        private static boolean isMatchLength (String str,int length){
+            if (str.isEmpty())
+                return false;
+            else
+                return str.length() == length ? true : false;
+        }
         /**
          * 验证手机格式
          */

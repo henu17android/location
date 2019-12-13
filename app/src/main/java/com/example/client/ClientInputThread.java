@@ -43,32 +43,14 @@ public class ClientInputThread extends Thread {
 
         try{
 //
-          //qmn 自测用
-            String msg =null;
-            char[] buffer = new char[1024];
-            while (isStart) {
-                reader = new InputStreamReader(inputStream,"UTF-8");
-                int readSize = reader.read(buffer);
-                while (readSize!=-1) {
-                   msg = new String(buffer,0,readSize);
-                    if (msg.charAt(msg.length()-1)=='}') {
-                        Log.d(TAG, "run: "+readSize+"    "+msg);
-                        break;
-                    }
-
-                }
-                mMessageListener.getMessage(msg);
-
-            }
-
-//
-//            //与服务器测试用
-//            String msg = null;
-//            byte[] buffer = new byte[1024];
+//          //qmn 自测用
+//            String msg =null;
+//            char[] buffer = new char[1024];
 //            while (isStart) {
-//                int readSize = inputStream.read(buffer);
+//                reader = new InputStreamReader(inputStream,"UTF-8");
+//                int readSize = reader.read(buffer);
 //                while (readSize!=-1) {
-//                     msg = new String(buffer, 0,readSize,UTF8_CHARSET);
+//                   msg = new String(buffer,0,readSize);
 //                    if (msg.charAt(msg.length()-1)=='}') {
 //                        Log.d("message", "run: "+readSize+"    "+msg);
 //                        break;
@@ -76,7 +58,25 @@ public class ClientInputThread extends Thread {
 //
 //                }
 //                mMessageListener.getMessage(msg);
+//
 //            }
+
+//
+            //与服务器测试用
+            String msg = null;
+            byte[] buffer = new byte[1024];
+            while (isStart) {
+                int readSize = inputStream.read(buffer);
+                while (readSize!=-1) {
+                     msg = new String(buffer, 0,readSize,UTF8_CHARSET);
+                    if (msg.charAt(msg.length()-1)=='}') {
+                        Log.d("message", "run: "+readSize+"    "+msg);
+                        break;
+                    }
+
+                }
+                mMessageListener.getMessage(msg);
+            }
 
             inputStream.close();
         } catch (IOException e) {

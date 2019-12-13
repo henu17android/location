@@ -10,11 +10,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.adapter.GroupMemberAdapter;
 import com.example.bean.User;
+import com.example.client.ClientMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupMemberActivity extends AppCompatActivity {
+public class GroupMemberActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +48,6 @@ public class GroupMemberActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void getMessage(ClientMessage msg){}
 }

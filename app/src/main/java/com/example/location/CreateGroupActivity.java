@@ -18,6 +18,8 @@ import com.example.client.ClientMessage;
 import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.DataUtil;
+import com.example.client.MessageType;
+import com.example.util.DataUtil;
 
 import org.json.JSONException;
 
@@ -85,11 +87,11 @@ public class CreateGroupActivity extends BaseActivity {
     @Override
     public void getMessage(ClientMessage msg){
         if (msg.isSuccess()) {
-            Toast.makeText(CreateGroupActivity.this,"创建群成功",Toast.LENGTH_LONG).show();
-            final Intent intent = new Intent(CreateGroupActivity.this,MainActivity.class);
+            Toast.makeText(CreateGroupActivity.this, "创建群成功", Toast.LENGTH_LONG).show();
+            final Intent intent = new Intent(CreateGroupActivity.this, MainActivity.class);
 //            Bundle bundle = new Bundle();
 //            bundle.putSerializable("group_toolbar",createGroup);
-            intent.putExtra("group_toolbar",createGroup);
+            intent.putExtra("group_toolbar", createGroup);
             startActivity(intent);
 
             Timer timer = new Timer();
@@ -99,7 +101,7 @@ public class CreateGroupActivity extends BaseActivity {
                     startActivity(intent);
                 }
             };
-            timer.schedule(timerTask,2);
+            timer.schedule(timerTask, 2);
 
         }
     }

@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -34,7 +37,11 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.Service.SocketService;
+import com.example.bean.Group;
 import com.example.bean.GroupSignInMessage;
+import com.example.client.ClientMessage;
+import com.example.client.MessageType;
+import com.example.util.TimeTransform;
 import com.example.client.ClientMessage;
 
 import org.json.JSONException;
@@ -70,8 +77,7 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
 
     String originatorId;    //发起人Id
     int messageId;
-    String groupId;
-    String adminId;
+    int groupId;
     boolean mIsLegal;   //是否在指定签到范围
     boolean isFirstLoc = true;
     private MyLocationData locData;
@@ -80,17 +86,18 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         getGPSAndPersimmions();
         setContentView(R.layout.activity_to_sign_in);
 
         Intent intent = getIntent();
-        messageId = intent.getIntExtra("messgaeId",-1);
-        groupId = intent.getStringExtra("groupId");
-        adminId = intent.getStringExtra("adminId");
+        //messageId = intent.getIntExtra("messgaeId",-1);
+        groupId = intent.getIntExtra("groupId",-1);
         findView();
         init();
         mMapView = findViewById(R.id.map_view);
+
     }
     void findView(){
         mMapView = findViewById(R.id.map_view);
@@ -179,8 +186,11 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
                 }else {
                     groupSignInMessage.setResult(0);
                 }
-                // TODO 把消息发给服务器端
-                finish();
+//                ClientMessage clientMessage = new ClientMessage();
+//                clientMessage.setMessageType(MessageType.USER_SIGN_IN);
+//                clientMessage.setGroupSignInMessage(groupSignInMessage);
+//                sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
+//                finish();
                 break;
             default:
                     break;
@@ -201,6 +211,8 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
             mCurrentLon = location.getLongitude();
             mTvLat.setText(String.valueOf(mCurrentLat));
             mTvLon.setText(String.valueOf(mCurrentLon));
+
+            mIsLegal = true;
             mIsLegal = GetDistance(adminGroupSignInMessage.getLatitude(),
                     adminGroupSignInMessage.getLongitude(),mCurrentLat,mCurrentLon,
                     adminGroupSignInMessage.getRegion());
@@ -318,28 +330,30 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
         mBaiduMap.addOverlay(adminLocation);
     }
 
+
     @Override
     public void getMessage(ClientMessage msg) {
+        if(msg != null){
+            if(msg.getMessageType().equals(MessageType.GET_SINGLE_SIGNIN_RECORD)){
+                List<GroupSignInMessage> recordList;
+                recordList = msg.getSignInMessages();
+                int number = 0;
 
+                for(int i=0; i<recordList.size(); i++){
+                    if(recordList.get(i).getType()==2){
+                        number++;
+                    }else if(recordList.get(i).getType()==1){
+                        adminGroupSignInMessage = recordList.get(i);
+                    }
+                    String endTime = TimeTransform.stampToTime(adminGroupSignInMessage.getEndTime());
+                    originatorId = adminGroupSignInMessage.getOriginatorId();
+                    setMarker(adminGroupSignInMessage.getLatitude(),adminGroupSignInMessage.getLongitude());
+                    mTvEndTime.setText(endTime);
+                    mTvNumber.setText(String.valueOf(number));
+                    mTvDistance.setText(adminGroupSignInMessage.getRegion() + "米");
+                }
+            }
+        }
     }
 
-
-//    /**
-//     * 接收消息并做处理
-//     * @param msg
-//     */
-//    @Override
-//    public void getMessage(String msg) {
-//        JSONObject jsonObject;
-//        String messageType = null;
-//        try {
-//            jsonObject = new JSONObject(msg);
-//            messageType = jsonObject.getString("messageType");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        if (messageType != null && messageType.endsWith("GET_SINGLE_SIGNIN_RECORD")) {
-//            List<GroupSignInMessage> recordList = new ArrayList<>();
-//        }
-//    }
 }

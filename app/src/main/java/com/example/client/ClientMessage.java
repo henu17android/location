@@ -2,6 +2,8 @@ package com.example.client;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.example.bean.Group;
+import com.example.bean.GroupMessage;
+import com.example.bean.GroupSignInMessage;
 import com.example.bean.User;
 import com.example.util.DataUtil;
 
@@ -10,6 +12,12 @@ import java.util.List;
 
 //客户端发送消息
 public class ClientMessage implements Serializable {
+
+    //群主发起签到
+    private GroupSignInMessage groupSignInMessage;
+    private GroupMessage groupMessage;
+    private int messageId;  //某次签到对应的id
+    private List<GroupSignInMessage> signInMessages;
     private MessageType messageType; //
     private User user;
     private Group group;
@@ -24,6 +32,22 @@ public class ClientMessage implements Serializable {
     private int stateCode;  //错误状态码
     private List<User> memberList; //组成员
     private String to;
+
+    public void setGroupSignInMessage(GroupSignInMessage groupSignInMessage) {
+        this.groupSignInMessage = groupSignInMessage;
+    }
+
+    public void setGroupMessage(GroupMessage groupMessage) {
+        this.groupMessage = groupMessage;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
+    public void setSignInMessages(List<GroupSignInMessage> signInMessages) {
+        this.signInMessages = signInMessages;
+    }
 
     public String getTo() {
         return to;
@@ -56,7 +80,21 @@ public class ClientMessage implements Serializable {
         return groupId;
     }
 
+    public GroupSignInMessage getGroupSignInMessage() {
+        return groupSignInMessage;
+    }
 
+    public GroupMessage getGroupMessage() {
+        return groupMessage;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public List<GroupSignInMessage> getSignInMessages() {
+        return signInMessages;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

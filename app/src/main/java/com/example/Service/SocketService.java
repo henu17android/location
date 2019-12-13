@@ -65,28 +65,28 @@ public class SocketService extends Service {
 
 
     private void initSocket() {
-       if (socket == null && connectThread == null) {
+        if (socket == null && connectThread == null) {
 
-           connectThread = new Thread(new Runnable() {
-               @Override
-               public void run() {
-                   Log.d(TAG, "run: initSocket");
-                   try {
-                       socket = new Socket("192.168.13.1",8096);
-                       toastMessage("已连接到服务器");
-                       dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                       MessagePostPool.outputStream = dataOutputStream;
-                       readMessage();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                       toastMessage("连接失败，正在尝试重连");
-                   }
+            connectThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "run: initSocket");
+                    try {
+                        socket = new Socket("106.52.109.122",8098);
+                        toastMessage("已连接到服务器");
+                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                        MessagePostPool.outputStream = dataOutputStream;
+                        readMessage();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        toastMessage("连接失败，正在尝试重连");
+                    }
 
 
-               }
-           });
-           connectThread.start();
-       }
+                }
+            });
+            connectThread.start();
+        }
 
 
     }
@@ -94,12 +94,12 @@ public class SocketService extends Service {
 
     //toast 弹出消息
     private void toastMessage (final String msg) {
-       mHandler.post(new Runnable() {
-           @Override
-           public void run() {
-               Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
-           }
-       });
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -118,7 +118,6 @@ public class SocketService extends Service {
                         client.getClientOutputThread().setMsg("{}");
                         client.getClientOutputThread().notify();
                     }
-
                     if (!client.getClientOutputThread().isStart()) {
                         toastMessage("连接断开，正在重连");
                         releaseSocket();
@@ -159,28 +158,28 @@ public class SocketService extends Service {
     }
 
 
-   //接收服务端消息并通过广播发送出去
-   private void readMessage() {
-       clientInputThread = new ClientInputThread(socket);
-       clientInputThread.setStart(true);
-       clientInputThread.start();
-       clientInputThread.setmMessageListener(new MessageListener() {
-           @Override
-           public void getMessage(String msg) throws JSONException {
-               //转为客户端消息类
-               //  String jsonMsg = msg.replace("\\","");
-               Log.d("message", "getMessage: "+msg);
-               if (msg.length()>0) {
-                   ClientMessage clientMessage = JSONObject.parseObject(msg, ClientMessage.class);
+    //接收服务端消息并通过广播发送出去
+    private void readMessage() {
+        clientInputThread = new ClientInputThread(socket);
+        clientInputThread.setStart(true);
+        clientInputThread.start();
+        clientInputThread.setmMessageListener(new MessageListener() {
+            @Override
+            public void getMessage(String msg) throws JSONException {
+                //转为客户端消息类
+                //  String jsonMsg = msg.replace("\\","");
+                Log.d("message", "getMessage: "+msg);
+                if (msg.length()>0) {
+                    ClientMessage clientMessage = JSONObject.parseObject(msg, ClientMessage.class);
 //                        Bundle bundle = new Bundle();
 //                        bundle.putSerializable("message",clientMessage);
-                   Intent sendIntent = new Intent();
-                   sendIntent.setAction(DataUtil.ACTION);
-                   sendIntent.putExtra("object", msg);
-                   sendBroadcast(sendIntent);
-               }
-           }
-       });
-   }
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(DataUtil.ACTION);
+                    sendIntent.putExtra("object", msg);
+                    sendBroadcast(sendIntent);
+                }
+            }
+        });
+    }
 
 }

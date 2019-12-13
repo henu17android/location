@@ -9,9 +9,9 @@ public class GroupMessage implements Serializable {
     @JSONField(name = "MessageId")
     private int messageId;
     @JSONField(name = "GroupId")
-    private String groupId;
+    private int groupId;
     @JSONField(name = "FromId")
-    private int fromId; //发起人id,groupId对应的adminId
+    private String fromId; //发起人id,groupId对应的adminId
 
     public int getMessageId() {
         return messageId;
@@ -21,19 +21,19 @@ public class GroupMessage implements Serializable {
         this.messageId = messageId;
     }
 
-    public String getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 
-    public int getFromId() {
+    public String getFromId() {
         return fromId;
     }
 
-    public void setFromId(int fromId) {
+    public void setFromId(String fromId) {
         this.fromId = fromId;
     }
 }

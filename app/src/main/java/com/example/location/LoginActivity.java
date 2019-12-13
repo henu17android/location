@@ -17,13 +17,15 @@ import com.example.LocationApp;
 import com.example.Service.SocketService;
 import com.example.bean.User;
 import com.example.client.ClientMessage;
+import com.example.client.MessageType;
+import com.example.util.DataUtil;
 import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.DataUtil;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-
+    public static LoginActivity loginActivity;
     public SharedPreferences sharedPreferences;
     private Boolean isLogin;
     private EditText userName;
@@ -45,6 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginActivity = this;
 
         sharedPreferences = getSharedPreferences("SaveSetting",MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin",false);

@@ -1,14 +1,21 @@
 package com.example.location;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -20,9 +27,11 @@ import android.widget.ExpandableListView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.LocationApp;
 import com.example.Service.SocketService;
 import com.example.adapter.GroupExpandListAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -35,15 +44,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bean.Group;
+import com.example.bean.GroupSignInMessage;
 import com.example.client.ClientMessage;
 import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.fragment.SearchResultDialog;
-import com.example.util.DataUtil;
+import com.example.util.ExcelUtil;
 import com.example.util.NotificationUtil;
-import com.example.util.PermissionUtil;
 import com.example.zhouwei.library.CustomPopWindow;
-import com.lvleo.dataloadinglayout.DataLoadingLayout;
+
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
@@ -51,8 +60,7 @@ import com.wyt.searchbox.custom.IOnSearchClickListener;
 /**
  *
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener,SearchResultDialog.CheckListener
-{
+public class MainActivity extends BaseActivity implements View.OnClickListener,SearchResultDialog.CheckListener {
 
     private DrawerLayout mDrawerLayout;
     private ImageView imageAdd;
@@ -68,11 +76,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
     private List<Group> createdGroup;
     private List<Group> joinedGroup;
     private Group signGroup;
-    private String signGroupId; //开始签到的群的id
+    private int signGroupId; //开始签到的群的id
     private Timer timer;
     private TimerTask signGroupTask;
     //private DataLoadingLayout dataLoadingLayout;
     private static final String TAG = "MainActivity";
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private static int REQUEST_PERMISSION_CODE = 1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,13 +126,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
     }
 
 
-
-
-
-    //同onQueryTextChange的else
     @Override
     protected void onResume() {
-        Group group = (Group)getIntent().getSerializableExtra("group_toolbar");
+
+        Group group = (Group)getIntent().getSerializableExtra("create_group");
         if (group!=null) {
             createdGroup.add(group);
         }
@@ -145,9 +157,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
 //            group.setGroupName("Group-----"+i);
 //            joinedGroup.add(group);
 //        }
+
+
+
     }
-
-
 
     //初始化布局
     private void initView() {
@@ -191,7 +204,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 Group group = groups.get(groupPosition).get(childPosition);
 
                 //如果点击群号码为要签到的群
-                if (group.getGroupId().equals(signGroupId)) {
+                if (group.getGroupId()==signGroupId) {
                     Intent intent = new Intent(MainActivity.this,ToSignInActivity.class);
                     intent.putExtra("groupId",signGroup.getGroupId());
                     intent.putExtra("admin",signGroup.getAdminId());
@@ -265,7 +278,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
 
                 break;
 
-
             default:
         }
     }
@@ -290,20 +302,76 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                         notificationUtil.sendNotification("Location","小陈小陈");
                         break;
 
-                    case R.id.scan:
-                        ClientMessage clientMessage = new ClientMessage();
-                        clientMessage.setMessageType(MessageType.GET_GROUPS);
-//                        sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
-                        MessagePostPool.sendMessage(clientMessage);
-
-
+                    case R.id.share:
+                        if(ActivityCompat.checkSelfPermission(MainActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+                        }else{
+                            ToExcel();
+                        }
+                        break;
                 }
             }
         };
 
         contentView.findViewById(R.id.create_group).setOnClickListener(listener);
         contentView.findViewById(R.id.add_friend_group).setOnClickListener(listener);
-        contentView.findViewById(R.id.scan).setOnClickListener(listener);
+        contentView.findViewById(R.id.share).setOnClickListener(listener);
+    }
+    private void ToExcel(){
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/record.xls";
+        String[] title = {"id","签到人","签到时间","签到结果"};
+
+        //TODO 从服务器获取recordList
+        List<GroupSignInMessage> recordList = new ArrayList<>();
+        GroupSignInMessage gm = new GroupSignInMessage();
+        gm.setReceiverId("1762500418");
+        gm.setDone(true);
+        for(int i =0;i<100;i++){
+            gm.setStartTime(System.currentTimeMillis());
+            gm.setEndTime(System.currentTimeMillis()+1000);
+            recordList.add(gm);
+        }
+        ExcelUtil.initExcel(filePath, title);
+        boolean isSuccess = ExcelUtil.writeObjListToExcel(recordList,filePath);
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){}
+        if(isSuccess){
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            Uri uri;
+            File file = new File(filePath);
+            if(Build.VERSION.SDK_INT >= 24){
+                uri = FileProvider.getUriForFile(getApplicationContext(),
+                        "com.example.LocationApp.fileprovider",file);
+            }
+            else{
+                uri = Uri.fromFile(file);
+            }
+            shareIntent.putExtra(Intent.EXTRA_STREAM,uri);
+            shareIntent.setType("text/plain");
+            startActivity(Intent.createChooser(shareIntent,"分享到"));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            boolean isAllow = true;
+            for (int i = 0; i < permissions.length; i++) {
+                if(grantResults[i]==-1){
+                    isAllow = false;
+                    Toast.makeText(MainActivity.this,"导出签到记录需要文件权限",Toast.LENGTH_SHORT).show();
+                }
+            }
+            if(isAllow){
+                ToExcel();
+            }
+        }
     }
 
 
@@ -321,15 +389,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 groups.add(joinedGroup);
                 mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
                 mGroupList.setAdapter(mAdapter);
-             //   dataLoadingLayout.setVisibility(View.GONE);
+                //   dataLoadingLayout.setVisibility(View.GONE);
 
                 break;
-           //搜索群
+            //搜索群
             case SEARCH_GROUP:
                 searchGroup = msg.getGroup();
                 showSearchFragment(searchGroup.getGroupName());
                 break;
-             //群主处理申请加入群聊
+            //群主处理申请加入群聊
             case APPLY_JOIN_GROUP:
                 NotificationUtil notification = new NotificationUtil(MainActivity.this);
                 notification.sendNotification("申请加入群聊",msg.getUser().getUserName()+
@@ -382,13 +450,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 notificationUtil.sendNotification("群 "+msg.getGroup().getGroupName(),"已发起签到，请在10分钟内签到完毕",pendingIntent);
                 setSignTimer();
                 break;
-
-
             default:
-
         }
+    }
+
+
+    //显示搜索出的群聊
+    private void showSearchFragment(String name) {
+        SearchResultDialog searchResultFrag = new SearchResultDialog();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("group_name",name);
+        searchResultFrag.setArguments(bundle);
+        searchResultFrag.show(getSupportFragmentManager(),"searchResult");
 
     }
+
+    long touchTime = 0;
+    long waitTime = 2000;
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if((currentTime - touchTime) >= waitTime){
+            Toast.makeText(this,"再按一次，退出程序",Toast.LENGTH_SHORT).show();
+            touchTime = currentTime;
+        } else {
+            LocationApp locationApp = (LocationApp)getApplication();
+            locationApp.getActivityUtil().exit();
+        }
+
+
+    }
+
+
+
+
+
 
 
     //发送申请
@@ -405,15 +501,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
         }
     }
 
-    //显示搜索出的群聊
-    private void showSearchFragment(String name) {
-        SearchResultDialog searchResultFrag = new SearchResultDialog();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("group_name",name);
-        searchResultFrag.setArguments(bundle);
-        searchResultFrag.show(getSupportFragmentManager(),"searchResult");
 
-    }
 
 
     private void setSignTimer() {
@@ -421,7 +509,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
         signGroupTask = new TimerTask() {
             @Override
             public void run() {
-                signGroupId = null;
+                signGroupId = 0;
             }
         };
         timer.schedule(signGroupTask,600000); //设置十分钟倒计时，过期不可进入签到页面
