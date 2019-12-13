@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.location.R;
+import com.example.location.ToSignInActivity;
 
 /**
  * 通知 兼容写法
@@ -72,6 +74,25 @@ public class NotificationUtil extends ContextWrapper {
             Notification notification = getNotification_25(title,content).build();
             getManager().notify(1,notification);
         }
+
+
+    }
+
+   //通知栏消息的重载方法，点击可跳转签到页面
+    public void sendNotification(String title,String content,PendingIntent pendingIntent) {
+        if (Build.VERSION.SDK_INT>=26) {
+            createNotificationChannel();
+            Notification.Builder builder = getChannelNotification(title,content);
+            builder.setContentIntent(pendingIntent);
+            Notification notification = builder.build();
+            getManager().notify(1,notification);
+        }else {
+            NotificationCompat.Builder builder = getNotification_25(title,content);
+            Notification notification = builder.setContentIntent(pendingIntent).build();
+            getManager().notify(1,notification);
+        }
+
+
     }
 
     //判断用户通知栏权限是否开启
@@ -91,4 +112,10 @@ public class NotificationUtil extends ContextWrapper {
            PermissionUtil.toPermissionSetting(activity);
         }
     }
+
+
+
+
+
+
 }

@@ -13,10 +13,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.LocationApp;
-import com.example.client.Client;
 import com.example.client.ClientInputThread;
 import com.example.client.ClientMessage;
 import com.example.client.MessageListener;
+import com.example.client.MessagePostPool;
 import com.example.util.DataUtil;
 
 import org.json.JSONException;
@@ -26,7 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * @author qmn
+ *
  */
 public class SocketService extends Service {
 
@@ -60,25 +60,28 @@ public class SocketService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind: ");
-        return sendMessageBinder;
+        return null;
     }
 
 
     private void initSocket() {
-       if (client.socket == null && connectThread == null) {
+       if (socket == null && connectThread == null) {
 
            connectThread = new Thread(new Runnable() {
                @Override
                public void run() {
                    Log.d(TAG, "run: initSocket");
-                  if (client.connection()) {
-                      toastMessage("已连接到服务器");
-                      sendMessageBinder.readMessage();
-//                      sendHeartBeat();
-                  }else {
-                      toastMessage("连接失败,正在重连");
-//                      releaseSocket();
-                  }
+                   try {
+                       socket = new Socket("192.168.13.1",8096);
+                       toastMessage("已连接到服务器");
+                       dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                       MessagePostPool.outputStream = dataOutputStream;
+                       readMessage();
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                       toastMessage("连接失败，正在尝试重连");
+                   }
+
 
                }
            });
@@ -111,7 +114,7 @@ public class SocketService extends Service {
                 public void run() {
                     Log.d(TAG, "run: beatheart");
                     //开始发送心跳包
-                    synchronized (client.getClientOutputThread()) {
+                /*    synchronized (client.getClientOutputThread()) {
                         client.getClientOutputThread().setMsg("{}");
                         client.getClientOutputThread().notify();
                     }
@@ -119,7 +122,7 @@ public class SocketService extends Service {
                     if (!client.getClientOutputThread().isStart()) {
                         toastMessage("连接断开，正在重连");
                         releaseSocket();
-                    }
+                    }*/
 
                 }
             };
@@ -139,10 +142,13 @@ public class SocketService extends Service {
             timer.cancel();
             timer = null;
         }
-        if (client.getClientOutputThread().outputStream!=null) {
+
+        if (dataOutputStream!=null) {
             try {
-                client.getClientOutputThread().outputStream.close();
-                client.getSocket().close();
+                dataOutputStream.close();
+                clientInputThread.getInputStream().close();
+                MessagePostPool.outputStream = null;
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d(TAG, "releaseSocket: "+e.getMessage());
@@ -153,40 +159,29 @@ public class SocketService extends Service {
 
     }
 
-   public class SendMessageBinder extends Binder {
 
-        //发送信息到服务端
-        public void sendMessage(String message) {
-            synchronized (client.getClientOutputThread()) {
-                client.getClientOutputThread().setMsg(message);
-                client.getClientOutputThread().notify();
-            }
-
-        }
-
-        //接收消息并传递到BaseActivity的广播接收器
-        private void readMessage() {
-            client.getClientInputThread().setmMessageListener(new MessageListener() {
-                @Override
-                public void getMessage(String msg){
-                    //转为客户端消息类
-                  //  String jsonMsg = msg.replace("\\","");
-                    String json = String.valueOf(JSON.parse(msg));
-                    if (msg.length()>0) {
-                        ClientMessage clientMessage = JSONObject.parseObject(msg,ClientMessage.class);
+   //接收服务端消息并通过广播发送出去
+   private void readMessage() {
+       clientInputThread = new ClientInputThread(socket);
+       clientInputThread.setStart(true);
+       clientInputThread.start();
+       clientInputThread.setmMessageListener(new MessageListener() {
+           @Override
+           public void getMessage(String msg) throws JSONException {
+               //转为客户端消息类
+               //  String jsonMsg = msg.replace("\\","");
+               Log.d("message", "getMessage: "+msg);
+               if (msg.length()>0) {
+                   ClientMessage clientMessage = JSONObject.parseObject(msg, ClientMessage.class);
 //                        Bundle bundle = new Bundle();
 //                        bundle.putSerializable("message",clientMessage);
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(DataUtil.ACTION);
-                        sendIntent.putExtra("object",clientMessage);
-                        sendBroadcast(sendIntent);
-                    }
-
-
-                }
-            });
-        }
-
-    }
+                   Intent sendIntent = new Intent();
+                   sendIntent.setAction(DataUtil.ACTION);
+                   sendIntent.putExtra("object", msg);
+                   sendBroadcast(sendIntent);
+               }
+           }
+       });
+   }
 
 }

@@ -43,6 +43,7 @@ import com.example.client.Client;
 import com.example.client.ClientMessage;
 import com.example.client.MessageType;
 import com.example.util.TimeTransform;
+import com.example.client.ClientMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +51,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 签到页面
+ */
 public class ToSignInActivity extends BaseActivity implements View.OnClickListener,SensorEventListener {
 
     private int PERMISSION_REQUEST = 127;
@@ -236,12 +240,6 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onResume(){
         super.onResume();
-        messageId = 1;
-        ClientMessage clientMessage = new ClientMessage();
-        clientMessage.setMessageType(MessageType.GET_SINGLE_SIGNIN_RECORD);
-        clientMessage.setMessageId(messageId);
-        clientMessage.setPhoneNumber("17625004818");
-        sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
         mMapView.onResume();
         //为系统的方向传感器注册监听器
         mSensorManager.registerListener(this,mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),

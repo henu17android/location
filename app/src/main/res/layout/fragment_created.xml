@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.fragment.CreatedFragment">
+    <com.ornach.nobobutton.NoboButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:nb_text="发起签到  "
+        app:nb_radius="6dp"
+        app:nb_backgroundColor="#fff"
+        app:nb_textColor="#000"
+        app:nb_borderColor="#51ADEE"
+        app:nb_borderWidth="2dp"
+        app:nb_textSize="24dp"
+        app:nb_focusColor="@color/colorAccent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:nb_drawableResource="@mipmap/start_sign"
+        android:id="@+id/start_sign"
+        />
+
+
+
+
+</RelativeLayout>

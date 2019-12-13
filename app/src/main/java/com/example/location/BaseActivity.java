@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.LocationApp;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.Service.SocketService;
 import com.example.client.ClientMessage;
 import com.example.util.DataUtil;
@@ -25,24 +27,27 @@ import org.json.JSONException;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected SocketService.SendMessageBinder sendMessageBinder; //发送消息的binder 对象
+  /*  protected SocketService.SendMessageBinder sendMessageBinder; //发送消息的binder 对象
 
     protected ServiceConnection connection = new ServiceConnection() { //与服务建立连接
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("socketService", "onServiceConnected: ");
             sendMessageBinder = (SocketService.SendMessageBinder)service;
+            Log.d("socketService", "onServiceConnected: "+name.getClassName());
+
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
 
         }
-    };
+    };*/
 
     private final static  String TAG = "BaseActivity";
 
 
-    protected abstract void initService();
+   // protected abstract void initService();
 
 
     ClientMessage message;  //客户端接收的信息
@@ -51,10 +56,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-             message =(ClientMessage)intent.getSerializableExtra("object");
-            Log.d("message", "onReceive: "+JSON.toJSONString(message));
-            if (message!=null) {
+//             message =(ClientMessage)intent.getSerializableExtra("object");
+            String getMessage = intent.getStringExtra("object");
+            message = JSONObject.parseObject(getMessage,ClientMessage.class);
+            Log.d("message", "onReceive: "+message);
+            if (getMessage.length()>0) {
                 getMessage(message);
+                Log.d("message", "onReceive: "+getMessage);
             }
         }
     };
@@ -85,21 +93,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.location.serverMessage");
-        bindService();
+        Log.d("socketService", "onStart: ");
+       // bindService();
         registerReceiver(receiver,filter);  //活动启动时注册广播
-        initService();  //绑定服务
+      //  initService();  //绑定服务
 
     }
 
-    private void bindService() {
+  /*  private void bindService() {
         Intent bindIntent = new Intent(BaseActivity.this, SocketService.class);
         bindService(bindIntent, connection, BIND_AUTO_CREATE);
-    }
+    }*/
 
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(connection);
+      ///  unbindService(connection);
         unregisterReceiver(receiver);  //活动停止时解绑
 
     }

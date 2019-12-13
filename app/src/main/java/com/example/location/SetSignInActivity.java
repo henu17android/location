@@ -41,7 +41,6 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.example.Service.SocketService;
 import com.example.bean.Group;
 import com.example.bean.GroupMessage;
 import com.example.bean.GroupSignInMessage;

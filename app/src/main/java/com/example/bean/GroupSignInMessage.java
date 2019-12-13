@@ -10,7 +10,7 @@ public class GroupSignInMessage implements Serializable {
     @JSONField(name = "Type")
     private int type;//1为发起签到 2为确认签到
     @JSONField(name = "GroupId")
-    private int groupId;//群Id
+    private String groupId;//群Id
     @JSONField(name = "OriginatorId")
     private String originatorId;//发起人Id 即手机号
     @JSONField(name = "StartTime")
@@ -51,11 +51,20 @@ public class GroupSignInMessage implements Serializable {
         this.type = type;
     }
 
-    public int getGroupId() {
+//    public int getGroupId() {
+//        return groupId;
+//    }
+//
+//    public void setGroupId(int groupId) {
+//        this.groupId = groupId;
+//    }
+
+
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 

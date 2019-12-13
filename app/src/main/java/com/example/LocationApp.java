@@ -2,7 +2,6 @@ package com.example;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -12,9 +11,15 @@ import com.example.util.ActivityUtil;
 
 public class LocationApp extends Application {
 
+
+
+
     private ActivityUtil activityUtil;
     @Override
     public void onCreate() {
+
+
+//        client = new Client("106.52.109.122",8098);
         super.onCreate();
         activityUtil = ActivityUtil.getScreenManager();
 

@@ -75,6 +75,17 @@
 <!--        android:background="@drawable/rounded_corner_search_box" />-->
 
 
+         <com.lvleo.dataloadinglayout.DataLoadingLayout
+             android:id="@+id/dataLoading_layout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_margin="7dp"
+             android:background="@android:color/transparent"
+             android:visibility="visible"
+             app:loadingBarColor="@android:color/holo_orange_dark"
+             app:statusText="暂无数据"
+             app:statusTextColor="@android:color/black"
+             app:statusTextSize="16sp" />
 
          <Button
              android:id="@+id/sign_in"
@@ -87,7 +98,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:groupIndicator="@null" />
+
      </LinearLayout>
+
          <android.support.design.widget.NavigationView
              android:layout_width="match_parent"
              android:layout_height="match_parent"

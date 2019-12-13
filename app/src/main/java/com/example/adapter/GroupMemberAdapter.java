@@ -50,11 +50,13 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
 
        ImageView imageIcon;
        TextView userName;
+       TextView signInResult;
 
        ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageIcon = (ImageView)itemView.findViewById(R.id.member_icon);
             userName = (TextView)itemView.findViewById(R.id.member_name);
+            signInResult = (TextView)itemView.findViewById(R.id.sign_in_result);
        }
     }
 }

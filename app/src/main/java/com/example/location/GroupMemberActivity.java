@@ -1,6 +1,5 @@
 package com.example.location;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,14 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import com.example.Service.SocketService;
 import com.example.adapter.GroupMemberAdapter;
 import com.example.bean.User;
-import com.example.client.ClientMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class GroupMemberActivity extends AppCompatActivity {
 public class GroupMemberActivity extends BaseActivity {
 
     @Override
@@ -48,6 +46,8 @@ public class GroupMemberActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             }
     }
+
+
 
     @Override
     public void initService() { }

@@ -52,7 +52,7 @@ public class ClientInputThread extends Thread {
 //                while (readSize!=-1) {
 //                   msg = new String(buffer,0,readSize);
 //                    if (msg.charAt(msg.length()-1)=='}') {
-//                        Log.d(TAG, "run: "+readSize+"    "+msg);
+//                        Log.d("message", "run: "+readSize+"    "+msg);
 //                        break;
 //                    }
 //

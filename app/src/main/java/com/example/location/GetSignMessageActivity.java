@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,12 +45,11 @@ import com.example.bean.GroupSignInMessage;
 import com.example.client.ClientMessage;
 import com.example.client.MessageType;
 import com.example.util.TimeTransform;
+import com.example.client.ClientMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -93,13 +91,6 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        try{
-            Thread.sleep(6000);
-        }catch (InterruptedException ie){
-            ie.printStackTrace();
-        }
-
         super.onCreate(savedInstanceState);
         getGPSAndPersimmions();
         setContentView(R.layout.activity_get_sign_message);
@@ -162,7 +153,10 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
         mGroupSignRecordList = new ArrayList<>();
         mSimpleSignInRecordAdapter = new SimpleSignInRecordAdapter(GetSignMessageActivity.this,mGroupSignRecordList);
         mSignRecordRecyclerView.setAdapter(mSimpleSignInRecordAdapter);
-        //获取所有记录
+        Group group = new Group();
+        group.setAdminId(adminId);
+        group.setGroupId(groupId);
+        //TODO 向服务器发送申请群成员签到情况表
 
         ClientMessage clientMessage = new ClientMessage();
         clientMessage.setMessageType(MessageType.GET_SINGLE_SIGNIN_RECORD);
@@ -301,9 +295,8 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
     }
 
     @Override
-    public void initService() {
-        Intent bindIntent = new Intent(GetSignMessageActivity.this, SocketService.class);
-        bindService(bindIntent, connection, BIND_AUTO_CREATE);
+    public void getMessage(ClientMessage msg) {
+
     }
 
     @Override

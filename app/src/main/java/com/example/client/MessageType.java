@@ -8,10 +8,8 @@ public enum MessageType {
     APPLY_JOIN_GROUP,  //申请加入群聊
     SEARCH_GROUP,  //查找群聊
     GET_GROUPS,  //请求服务端存储的群聊
-    RECEIVE_MEMBER, //群主收到接纳新成员请求
-
-    GET_SINGLE_SIGNIN_RECORD,   //获取某次签到记录
-    SIGN_IN,
-    USER_SIGN_IN, //签到
+    APPLY_JOIN_GROUP_RESULT, //群主处理加群请求结果
+    SET_UP_SIGN, //发起签到
+    GET_TO_SIGN //通知签到
 
 }
