@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,7 +112,6 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
                 clientMessage.setMessageType(MessageType.GET_SINGLE_SIGNIN_RECORD);
                 clientMessage.setMessageId(messageId);
                 clientMessage.setPhoneNumber("17625004818");
-                sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
             }
         });
     }
@@ -293,12 +293,6 @@ public class GetSignMessageActivity extends BaseActivity implements SensorEventL
             }
         }
     }
-
-    @Override
-    public void getMessage(ClientMessage msg) {
-
-    }
-
     @Override
     public void getMessage(ClientMessage msg) {
         if(msg != null){

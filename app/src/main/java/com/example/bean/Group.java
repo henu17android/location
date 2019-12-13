@@ -32,19 +32,7 @@ public class Group implements Serializable {
         Id = id;
     }
 
-    public Group() {
-
-    }
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public String getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
@@ -63,7 +51,7 @@ public class Group implements Serializable {
 
 
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 

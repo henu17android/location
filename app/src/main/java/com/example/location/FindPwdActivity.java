@@ -13,8 +13,7 @@ public class FindPwdActivity extends BaseActivity {
         setContentView(R.layout.activity_find_pwd);
     }
 
-    @Override
-    public void initService() { }
+
     @Override
     public void getMessage(ClientMessage msg){}
 }

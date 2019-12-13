@@ -204,7 +204,6 @@ public class SetSignInActivity extends BaseActivity implements SensorEventListen
                 clientMessage.setMessageType(MessageType.SIGN_IN);
                 clientMessage.setGroupMessage(groupMessage);
                 clientMessage.setGroupSignInMessage(groupSignInMessage);
-                sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
                 finish();
                 break;
             default:
@@ -433,11 +432,6 @@ public class SetSignInActivity extends BaseActivity implements SensorEventListen
         return result;
     }
 
-    @Override
-    public void initService() {
-        Intent bindIntent = new Intent(SetSignInActivity.this, SocketService.class);
-        bindService(bindIntent, connection, BIND_AUTO_CREATE);
-    }
 
     @Override
     public void getMessage(ClientMessage msg) {

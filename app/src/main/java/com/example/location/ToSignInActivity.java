@@ -39,7 +39,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.example.Service.SocketService;
 import com.example.bean.Group;
 import com.example.bean.GroupSignInMessage;
-import com.example.client.Client;
 import com.example.client.ClientMessage;
 import com.example.client.MessageType;
 import com.example.util.TimeTransform;
@@ -330,11 +329,7 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
         //在地图上添加
         mBaiduMap.addOverlay(adminLocation);
     }
-    @Override
-    public void initService() {
-        Intent bindIntent = new Intent(ToSignInActivity.this, SocketService.class);
-        bindService(bindIntent, connection, BIND_AUTO_CREATE);
-    }
+
 
     @Override
     public void getMessage(ClientMessage msg) {

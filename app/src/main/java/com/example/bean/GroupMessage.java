@@ -9,7 +9,7 @@ public class GroupMessage implements Serializable {
     @JSONField(name = "MessageId")
     private int messageId;
     @JSONField(name = "GroupId")
-    private String groupId;
+    private int groupId;
     @JSONField(name = "FromId")
     private String fromId; //发起人id,groupId对应的adminId
 
@@ -21,11 +21,11 @@ public class GroupMessage implements Serializable {
         this.messageId = messageId;
     }
 
-    public String getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 

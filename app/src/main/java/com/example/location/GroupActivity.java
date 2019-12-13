@@ -24,7 +24,6 @@ public class GroupActivity extends BaseActivity {
 /**
  * 群详情页面
  */
-public class GroupActivity extends AppCompatActivity {
 
     private boolean isCreate;
     private String groupName;
@@ -74,6 +73,7 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     public void getMessage(ClientMessage msg) {
 
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_toolbar,menu);
