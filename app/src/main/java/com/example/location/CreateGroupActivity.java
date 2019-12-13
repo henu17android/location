@@ -1,34 +1,34 @@
 package com.example.location;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.example.LocationApp;
 import com.example.Service.SocketService;
 import com.example.bean.Group;
-import com.example.client.Client;
 import com.example.client.ClientMessage;
-import com.example.client.ClientMessageType;
-import com.example.client.MessageListener;
+import com.example.client.MessagePostPool;
+import com.example.client.MessageType;
+import com.example.util.DataUtil;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class CreateGroupActivity extends BaseActivity {
 
     private EditText nameEdt;
-
+    private Group createGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,14 @@ public class CreateGroupActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
         }
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -58,31 +64,43 @@ public class CreateGroupActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.create_group_finish :
                 String groupName = nameEdt.getText().toString();
-                sendMessage(groupName);
-
-
-
+                if (groupName.length()>0) {
+                    createGroup = new Group(groupName);
+                    ClientMessage clientMessage = new ClientMessage();
+                    clientMessage.setMessageType(MessageType.CREATE_GROUP);
+//                    createGroup.setAdminId(DataUtil.USER_NUMBER);
+                    createGroup.setAdminId("123456789");
+                    clientMessage.setGroup(createGroup);
+                   // sendMessageBinder.sendMessage(JSON.toJSONString());
+                    MessagePostPool.sendMessage(clientMessage);
+                    Toast.makeText(CreateGroupActivity.this,"创建信息已发送",Toast.LENGTH_SHORT).show();
+                }
 
         }
         return true;
     }
 
-    private void sendMessage(String groupName) {
-        Group group = new Group();
-        group.setGroupName(groupName);
-
-
-    }
 
 
     @Override
-    protected void initService() {
-        Intent bindIntent = new Intent(CreateGroupActivity.this,SocketService.class);
-        bindService(bindIntent,connection,BIND_AUTO_CREATE);
-    }
+    public void getMessage(ClientMessage msg){
+        if (msg.isSuccess()) {
+            Toast.makeText(CreateGroupActivity.this,"创建群成功",Toast.LENGTH_LONG).show();
+            final Intent intent = new Intent(CreateGroupActivity.this,MainActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("group_toolbar",createGroup);
+            intent.putExtra("group_toolbar",createGroup);
+            startActivity(intent);
 
-    @Override
-    public void getMessage(String msg) throws JSONException {
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    startActivity(intent);
+                }
+            };
+            timer.schedule(timerTask,2);
 
+        }
     }
 }

@@ -43,7 +43,7 @@ public class ClientInputThread extends Thread {
 
         try{
 //
-//          //qmn 自测用
+          //qmn 自测用
             String msg =null;
             char[] buffer = new char[1024];
             while (isStart) {
@@ -70,7 +70,7 @@ public class ClientInputThread extends Thread {
 //                while (readSize!=-1) {
 //                     msg = new String(buffer, 0,readSize,UTF8_CHARSET);
 //                    if (msg.charAt(msg.length()-1)=='}') {
-//                        Log.d(TAG, "run: "+readSize+"    "+msg);
+//                        Log.d("message", "run: "+readSize+"    "+msg);
 //                        break;
 //                    }
 //

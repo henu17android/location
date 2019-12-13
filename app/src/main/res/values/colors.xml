@@ -8,5 +8,8 @@
     <color name="theme_red">#FF6060</color>
     <color name="toolbar_gray">#EFEFEF</color>
     <color name="error_red">#FF0000</color>
-
+    <color name="white">#ffffff</color>
+    <color name="widget_dark_blue_color">#1fa2ff</color>
+    <color name="line_light_blue_color">#FFE5E5E5</color>
+    <color name="text_gray">#808080</color>
 </resources>

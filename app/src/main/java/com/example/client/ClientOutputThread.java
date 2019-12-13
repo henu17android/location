@@ -14,6 +14,8 @@ import java.nio.ByteBuffer;
  * client 写线程类
  * @author qmn
  */
+
+/*
 public class ClientOutputThread extends Thread {
 
     private Socket socket;
@@ -47,7 +49,7 @@ public class ClientOutputThread extends Thread {
 //                    sBuilder.append(msg);
 //                    streamWriter.write(sBuilder.toString());
 //                    streamWriter.flush();
-                    Log.d(TAG, "send: "+msg);
+                    Log.d("message", "send: "+msg);
                     synchronized (this) {
                         wait();   //发送后线程等待
                     }
@@ -96,4 +98,4 @@ public class ClientOutputThread extends Thread {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-}
+}*/

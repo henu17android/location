@@ -4,7 +4,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.client.ClientInputThread;
-import com.example.client.ClientOutputThread;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -20,7 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
-
+/*
 public class Client {
 
 //    private String ip = null;
@@ -131,7 +130,7 @@ public class Client {
     /**
      * 负责连接socket和管理读写线程
      */
-    public class ClientThread extends Thread {
+  /*  public class ClientThread extends Thread {
         //app 全局只有一个client，client 线程开启后也创建了唯一的读写线程
         private ClientInputThread inputThread;
         private ClientOutputThread outputThread;
@@ -155,4 +154,4 @@ public class Client {
     public Socket getSocket() {
         return socket;
     }
-}
+}*/

@@ -1,15 +1,38 @@
 package com.example.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Group {
-    int groupId;
-    String groupName;
-    String introduce;
-    String adminId;
-    List<User> memberList; //成员名单
+public class Group implements Serializable {
+    private int Id;
+    @JSONField(name = "GroupId")
+    private String groupId;
+    @JSONField(name = "GroupName")
+    private String groupName;
+    @JSONField(name = "Introduce")
+    private String introduce;
+    @JSONField(name = "AdminId")
+    private String adminId;
 
-    public int getGroupId() {
+    public Group(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Group() {
+
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public String getGroupId() {
         return groupId;
     }
 
@@ -25,11 +48,9 @@ public class Group {
         return adminId;
     }
 
-    public List<User> getMemberList() {
-        return memberList;
-    }
 
-    public void setGroupId(int groupId) {
+
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
@@ -45,7 +66,8 @@ public class Group {
         this.adminId = adminId;
     }
 
-    public void setMemberList(List<User> memberList) {
-        this.memberList = memberList;
-    }
+
+
+
+
 }

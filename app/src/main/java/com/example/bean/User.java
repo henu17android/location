@@ -1,14 +1,22 @@
 package com.example.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.io.Serializable;
+
 /**
  * 用户信息实体类
  */
-public class User {
+public class User implements Serializable {
 
     private int id =-1;
+    @JSONField(name = "PhoneNumber")
     private String phoneNumber = null;
+    @JSONField(name = "UserName")
     private String userName = null;
+    @JSONField(name = "StudentNumber")
     private String studentNumber = null;
+    @JSONField(name = "Password")
     private String password = null;
 
 
@@ -61,4 +69,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
+
 }

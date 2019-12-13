@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.bean.Group;
 import com.example.location.R;
 import java.util.List;
 
@@ -15,9 +17,9 @@ public class GroupExpandListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<String> mGroupList;
-    private List<List<String>> mChildList;
+    private List<List<Group>> mChildList;
 
-    public GroupExpandListAdapter(Context context, List<String> group, List<List<String>> child){
+    public GroupExpandListAdapter(Context context, List<String> group, List<List<Group>> child){
         mContext = context;
         mGroupList = group;
         mChildList = child;
@@ -92,6 +94,7 @@ public class GroupExpandListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPositon, int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent){
+        Group group = mChildList.get(groupPositon).get(childPosition);
         ChildViewHolder viewHolder = null;
         if (convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(
@@ -104,7 +107,7 @@ public class GroupExpandListAdapter extends BaseExpandableListAdapter {
             viewHolder = (ChildViewHolder)convertView.getTag();
         }
         //TODO 设置图片viewHolder.childImage.set
-        viewHolder.childName.setText(mChildList.get(groupPositon).get(childPosition));
+        viewHolder.childName.setText(group.getGroupName());
         return convertView;
     }
 
@@ -123,6 +126,8 @@ public class GroupExpandListAdapter extends BaseExpandableListAdapter {
         private ImageView childImage;
         private TextView childName;
     }
+
+
 
 }
 
