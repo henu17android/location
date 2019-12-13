@@ -19,10 +19,8 @@ import com.example.Service.SocketService;
 import com.example.client.Client;
 import com.example.bean.User;
 import com.example.client.ClientMessage;
-import com.example.client.ClientMessageType;
-
-
-import org.json.JSONException;
+import com.example.client.MessageType;
+import com.example.util.DataUtil;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -112,7 +110,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void sendRegister(User user) {
         ClientMessage clientMessage  = new ClientMessage();
         clientMessage.setUser(user);
-        clientMessage.setMessageType(ClientMessageType.REGISTER);
+        clientMessage.setMessageType(MessageType.REGISTER);
 
         String message = JSONObject.toJSONString(clientMessage);
         sendMessageBinder.sendMessage(message);
@@ -128,38 +126,30 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
 
     @Override
-    public void getMessage(String msg) throws JSONException {
-        int id = 2;
-        String messageType = null;
-        try {
-            org.json.JSONObject jsonObject = new org.json.JSONObject(msg);
-            id = jsonObject.getInt("id");
-            messageType = jsonObject.getString("messageType");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, "getMessage: " + e.getMessage());
-        }
+    public void getMessage(ClientMessage msg) {
+            if (msg.getMessageType().equals(MessageType.REGISTER)) {
+                switch (msg.getStateCode()) {
+                    case 0:
+                        Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+                        break;
 
-        if (messageType != null && messageType.endsWith("REGISTER")) {
-            switch (id) {
-                case 0:
-                    Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
-                    break;
+                    case 1:
+                        Toast.makeText(RegisterActivity.this, "账户已存在", Toast.LENGTH_SHORT).show();
+                        break;
 
-                case -1:
-                    Toast.makeText(RegisterActivity.this, "账户已存在", Toast.LENGTH_SHORT).show();
-                    break;
+                    default:
+                        Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        DataUtil.USER_NUMBER = user_tele.getText().toString();
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
 
-                default:
-                    Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-
+                }
             }
         }
 
-        }
+
+
 
 
         @Override

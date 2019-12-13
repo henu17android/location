@@ -9,11 +9,17 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PersistableBundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.example.LocationApp;
 import com.example.Service.SocketService;
+import com.example.client.ClientMessage;
+import com.example.util.DataUtil;
 
 import org.json.JSONException;
 
@@ -39,28 +45,39 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initService();
 
 
-    String message;  //客户端接收的信息
+    ClientMessage message;  //客户端接收的信息
 
     //
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            message = intent.getStringExtra("ServerMessage");
+             message =(ClientMessage)intent.getSerializableExtra("object");
+            Log.d("message", "onReceive: "+JSON.toJSONString(message));
             if (message!=null) {
-                try {
-                    getMessage(message);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "onReceive: ");
-                }
+                getMessage(message);
             }
         }
     };
 
-    public abstract void getMessage(String msg) throws JSONException;
+    public abstract void getMessage(ClientMessage msg);
 
-    public String getMsg() {
+    public ClientMessage getMsg() {
         return message;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LocationApp application = (LocationApp)getApplication();
+        application.getActivityUtil().pushActivity(this);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        LocationApp application = (LocationApp)getApplication();
+        application.getActivityUtil().popActivity(this);
     }
 
     @Override
@@ -71,7 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         bindService();
         registerReceiver(receiver,filter);  //活动启动时注册广播
         initService();  //绑定服务
-
 
     }
 
@@ -87,7 +103,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         unregisterReceiver(receiver);  //活动停止时解绑
 
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

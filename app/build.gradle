@@ -21,10 +21,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilter("x86")
-            abiFilter("armeabi-v7a")
-        }
+//        ndk {
+//            abiFilter("x86")
+//            abiFilter("armeabi-v7a")
+//        }
     }
     buildTypes {
         release {
@@ -54,10 +54,17 @@ dependencies {
     implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'com.android.support:design:28.0.0'
+    implementation 'com.wenwenwen888:searchbox:1.0.1'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'  //升级support 版本
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation group: "net.sourceforge.jexcelapi", name: "jxl", version: "2.6.12"
 
+    //小圆圈
+    implementation 'com.wang.avi:library:2.1.3'
 }

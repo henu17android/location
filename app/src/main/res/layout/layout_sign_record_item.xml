@@ -16,7 +16,7 @@
         android:layout_marginLeft="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="成狗大"
+        android:text="顾青山"
         android:textSize="18dp"/>
     <TextView
         android:id="@+id/tv_time"
@@ -26,7 +26,7 @@
         android:layout_toRightOf="@+id/img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2018年06月26日 星期一  10:49"
+        android:text="2019年12月10日 星期二  9：21"
         android:textSize="15dp"/>
     <View
         android:layout_marginTop="4dp"

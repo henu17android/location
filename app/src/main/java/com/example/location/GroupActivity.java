@@ -3,6 +3,8 @@ package com.example.location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.client.ClientMessage;
+
 public class GroupActivity extends BaseActivity {
 
     @Override
@@ -17,7 +19,7 @@ public class GroupActivity extends BaseActivity {
     }
 
     @Override
-    public void getMessage(String msg) {
+    public void getMessage(ClientMessage msg) {
 
     }
 }

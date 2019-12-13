@@ -18,13 +18,12 @@ import com.example.Service.SocketService;
 import com.example.bean.User;
 import com.example.client.Client;
 import com.example.client.ClientMessage;
-import com.example.client.ClientMessageType;
-
-import org.json.JSONException;
+import com.example.client.MessageType;
+import com.example.util.DataUtil;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-
+    public static LoginActivity loginActivity;
     public SharedPreferences sharedPreferences;
     private Boolean isLogin;
     private EditText userName;
@@ -38,6 +37,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static final String TAG = "LoginActivity";
     private static final int CONNECTION_SUCCESS = 1;
     private static final int CONNECTION_FAIL = 0;
+    private String phoneNumber;
 
 
 
@@ -46,16 +46,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginActivity = this;
 
         sharedPreferences = getSharedPreferences("SaveSetting",MODE_PRIVATE);
-        isLogin = sharedPreferences.getBoolean("isLogin",true);
+        isLogin = sharedPreferences.getBoolean("isLogin",false);
+
         if(isLogin){
             //登录的处理
             Log.d("client:id", "LoginActivity "+client);
-            initView();
-        }else {
             Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+            String number = sharedPreferences.getString("user_phone",null);
+            DataUtil.USER_NUMBER = number;
+
             startActivity(mainIntent);
+        }else {
+            initView();
         }
 
     }
@@ -86,8 +91,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             //TODO 登录成功后，加上 saveIsLogin(false);
             case R.id.login_button :
-                 sendLoginMessage(userName.getText().toString(),password.getText().toString());
-                 break;
+                phoneNumber = userName.getText().toString();
+                sendLoginMessage(phoneNumber,password.getText().toString());
+
+
             default:
 
         }
@@ -99,13 +106,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(LoginActivity.this,"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
         }else {
             User user = new User(userName,password);
-            ClientMessage message = new ClientMessage();
-            message.setUser(user);
-            message.setMessageType(ClientMessageType.LOGIN);
-
             ClientMessage clientMessage = new ClientMessage();
             clientMessage.setUser(user);
-            clientMessage.setMessageType(ClientMessageType.LOGIN);
+            clientMessage.setMessageType(MessageType.LOGIN);
             String jsonString = JSON.toJSONString(clientMessage);
             sendMessageBinder.sendMessage(jsonString);  //通过binder 发送数据
             Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(message));
@@ -126,23 +129,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * @param msg
      */
     @Override
-    public void getMessage(String msg) {
-        JSONObject jsonObject = null;
-        String messageType = null;
-        int stateCode = 2;
-        Log.d(TAG, "getMessage: msg" + msg);
-
-        try {
-            jsonObject = new JSONObject(msg);
-            stateCode = jsonObject.getInt("stateCode");
-            messageType = jsonObject.getString("messageType");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, "getMessage: " + e.getMessage());
-        }
-
-        if (messageType != null && messageType.endsWith("LOGIN")) {
-            switch (stateCode) {
+    public void getMessage(ClientMessage msg)  {
+        if (msg.getMessageType().equals(MessageType.LOGIN)) {
+            switch (msg.getStateCode()) {
                 case 0:
                     Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                     break;
@@ -154,22 +143,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 case 1:
                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    saveIsLogin(false);
+                    saveIsLogin(true,userName.getText().toString());  //保存登录状态
+                    DataUtil.USER_NUMBER = phoneNumber;
                     startActivity(intent);
                     break;
-
                 default:
                     Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
             }
+
+
         }
-    }
+
+        }
 
 
-    private void saveIsLogin(boolean islogin){
-
+    private void saveIsLogin(boolean islogin,String phone){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("isLogin",islogin);
-        editor.commit();
+        editor.putString("user_phone",phone);
+        editor.apply();
     }
 
 
