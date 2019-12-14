@@ -45,6 +45,9 @@ import android.widget.Toast;
 
 import com.example.bean.Group;
 import com.example.bean.GroupSignInMessage;
+import com.example.bean.MemberSignRecord;
+import com.example.bean.SignRecord;
+import com.example.bean.User;
 import com.example.client.ClientMessage;
 import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
@@ -143,21 +146,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
         //先创建一点，看一下
 //
         createdGroup = new ArrayList<>();
-//
-//        for (int i = 0;i<5;i++) {
-//            Group group = new Group();
-//            group.setGroupName("Group-----"+i);
-//            createdGroup.add(group);
-//        }
-//
-        joinedGroup = new ArrayList<>();
-//        for (int i =0;i<8;i++){
-//            Group group = new Group();
-//            group.setGroupId(String.valueOf(i));
-//            group.setGroupName("Group-----"+i);
-//            joinedGroup.add(group);
-//        }
 
+        for (int i = 0;i<5;i++) {
+            Group group = new Group();
+            group.setGroupName("Group-----"+i);
+            createdGroup.add(group);
+        }
+
+        joinedGroup = new ArrayList<>();
+        for (int i =0;i<8;i++){
+            Group group = new Group();
+            group.setGroupId(i);
+            group.setGroupName("Group-----"+i);
+            joinedGroup.add(group);
+        }
+
+
+        groups.add(createdGroup);
+        groups.add(joinedGroup);
+        mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
+        mGroupList.setAdapter(mAdapter);
 
 
     }
@@ -303,14 +311,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                         break;
 
                     case R.id.share:
-                        if(ActivityCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                                PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(MainActivity.this,
-                                    PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
-                        }else{
-                            ToExcel();
-                        }
+//                        if(ActivityCompat.checkSelfPermission(MainActivity.this,
+//                                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+//                                PackageManager.PERMISSION_GRANTED) {
+//                            ActivityCompat.requestPermissions(MainActivity.this,
+//                                    PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+//                        }else{
+//                            ToExcel();
+//                        }
                         break;
                 }
             }
@@ -384,11 +392,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
             case GET_GROUPS:
                 createdGroup = msg.getCreateGroups();
                 joinedGroup = msg.getJoinGroups();
-                Log.d(TAG, "getMessage: "+createdGroup.size() +"     "+joinedGroup.size());
-                groups.add(createdGroup);
-                groups.add(joinedGroup);
-                mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
-                mGroupList.setAdapter(mAdapter);
+//                Log.d(TAG, "getMessage: "+createdGroup.size() +"     "+joinedGroup.size());
+//                groups.add(createdGroup);
+//                groups.add(joinedGroup);
+//                mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
+//                mGroupList.setAdapter(mAdapter);
                 //   dataLoadingLayout.setVisibility(View.GONE);
 
                 break;

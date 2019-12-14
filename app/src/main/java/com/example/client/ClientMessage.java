@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.example.bean.Group;
 import com.example.bean.GroupMessage;
 import com.example.bean.GroupSignInMessage;
+import com.example.bean.MemberSignRecord;
 import com.example.bean.User;
 import com.example.util.DataUtil;
 
@@ -32,6 +33,15 @@ public class ClientMessage implements Serializable {
     private int stateCode;  //错误状态码
     private List<User> memberList; //组成员
     private String to;
+    private List<MemberSignRecord> memberSignRecordList;
+
+    public List<MemberSignRecord> getMemberSignRecordList() {
+        return memberSignRecordList;
+    }
+
+    public void setMemberSignRecordList(List<MemberSignRecord> memberSignRecordList) {
+        this.memberSignRecordList = memberSignRecordList;
+    }
 
     public void setGroupSignInMessage(GroupSignInMessage groupSignInMessage) {
         this.groupSignInMessage = groupSignInMessage;

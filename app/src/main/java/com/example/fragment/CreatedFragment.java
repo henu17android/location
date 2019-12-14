@@ -20,7 +20,7 @@ import com.ornach.nobobutton.NoboButton;
 public class CreatedFragment extends Fragment {
 
     private NoboButton startSignBtn;
-    private String groupId;
+    private int groupId;
     private String adminId;
 
     public CreatedFragment() {

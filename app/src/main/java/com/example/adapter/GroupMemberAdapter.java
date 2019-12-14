@@ -6,57 +6,65 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bean.MemberSignRecord;
 import com.example.bean.User;
 import com.example.location.R;
 
 import java.util.List;
 
-public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.ViewHolder> {
-
-    private List<User> memberList;
-    private Context context;
-
-
+public class GroupMemberAdapter extends BaseExpandableListAdapter {
 
     @Override
-    public ViewHolder onCreateViewHolder( ViewGroup viewGroup, int position) {
-
-        View view = LayoutInflater.from(context).inflate(R.layout.group_member_item,viewGroup,false);
-        ViewHolder viewHolder = new ViewHolder(view);
-
-        return viewHolder;
+    public int getGroupCount() {
+        return 0;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        User user = memberList.get(position);
-        viewHolder.userName.setText(user.getUserName());
-    }
-
-    public GroupMemberAdapter(Context context,List<User> memberList) {
-        this.memberList = memberList;
-        this.context = context;
+    public int getChildrenCount(int groupPosition) {
+        return 0;
     }
 
     @Override
-    public int getItemCount() {
-        return memberList.size();
+    public Object getGroup(int groupPosition) {
+        return null;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return null;
+    }
 
-       ImageView imageIcon;
-       TextView userName;
-       TextView signInResult;
+    @Override
+    public long getGroupId(int groupPosition) {
+        return 0;
+    }
 
-       ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageIcon = (ImageView)itemView.findViewById(R.id.member_icon);
-            userName = (TextView)itemView.findViewById(R.id.member_name);
-            signInResult = (TextView)itemView.findViewById(R.id.sign_in_result);
-       }
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return 0;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return false;
     }
 }

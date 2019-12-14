@@ -27,7 +27,7 @@ public class GroupActivity extends BaseActivity {
 
     private boolean isCreate;
     private String groupName;
-    private String groupId;
+    private int groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class GroupActivity extends BaseActivity {
 
         isCreate = getIntent().getBooleanExtra("isCreate",false);
         groupName = getIntent().getStringExtra("group_name");
-        groupId = getIntent().getStringExtra("group_id");
+        groupId = getIntent().getIntExtra("group_id",-1);
 
         toolbar.setTitle(groupName);
         Log.d("GroupActivity", "onCreate: "+isCreate);
@@ -78,17 +78,42 @@ public class GroupActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_toolbar,menu);
         MenuItem memberItem = menu.findItem(R.id.group_member);
+        MenuItem meItem = menu.findItem(R.id.group_me);
         if (isCreate) {
             memberItem.setVisible(true);
+            meItem.setVisible(false);
             Bundle bundle = new Bundle();
-            bundle.putString("group_id",groupId); //将群id// 传递给fragment
+            bundle.putString("group_id",String.valueOf(groupId)); //将群id// 传递给fragment
             CreatedFragment fragment = new CreatedFragment();
             fragment.setArguments(bundle);
             replaceFragment(fragment);
         }else {
             memberItem.setVisible(false);
+            meItem.setVisible(true);
             replaceFragment(new JoinFragment());
         }
         return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.group_member:
+                Intent intent = new Intent(GroupActivity.this,GroupMemberActivity.class);
+                intent.putExtra("group_id",groupId);
+
+
+
+
+
+
+
+
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

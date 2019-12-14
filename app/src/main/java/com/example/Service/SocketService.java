@@ -65,28 +65,28 @@ public class SocketService extends Service {
 
 
     private void initSocket() {
-        if (socket == null && connectThread == null) {
+       if (socket == null && connectThread == null) {
 
-            connectThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "run: initSocket");
-                    try {
-                        socket = new Socket("106.52.109.122",8098);
-                        toastMessage("已连接到服务器");
-                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                        MessagePostPool.outputStream = dataOutputStream;
-                        readMessage();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        toastMessage("连接失败，正在尝试重连");
-                    }
+           connectThread = new Thread(new Runnable() {
+               @Override
+               public void run() {
+                   Log.d(TAG, "run: initSocket");
+                   try {
+                       socket = new Socket("192.168.1.174",8096);
+                       toastMessage("已连接到服务器");
+                       dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                       MessagePostPool.outputStream = dataOutputStream;
+                       readMessage();
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                       toastMessage("连接失败，正在尝试重连");
+                   }
 
 
-                }
-            });
-            connectThread.start();
-        }
+               }
+           });
+           connectThread.start();
+       }
 
 
     }
@@ -118,6 +118,7 @@ public class SocketService extends Service {
                         client.getClientOutputThread().setMsg("{}");
                         client.getClientOutputThread().notify();
                     }
+
                     if (!client.getClientOutputThread().isStart()) {
                         toastMessage("连接断开，正在重连");
                         releaseSocket();
