@@ -102,15 +102,9 @@ public class GroupActivity extends BaseActivity {
             case R.id.group_member:
                 Intent intent = new Intent(GroupActivity.this,GroupMemberActivity.class);
                 intent.putExtra("group_id",groupId);
-
-
-
-
-
-
-
-
-
+                startActivity(intent);
+                break;
+            default:break;
         }
 
 

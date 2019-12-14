@@ -59,7 +59,6 @@ import com.example.zhouwei.library.CustomPopWindow;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
-
 /**
  *
  */
@@ -211,13 +210,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Group group = groups.get(groupPosition).get(childPosition);
 
-                //如果点击群号码为要签到的群
-                if (group.getGroupId()==signGroupId) {
-                    Intent intent = new Intent(MainActivity.this,ToSignInActivity.class);
-                    intent.putExtra("groupId",signGroup.getGroupId());
-                    intent.putExtra("admin",signGroup.getAdminId());
-                    startActivity(intent);
-                } else {
+                ////如果点击群号码为要签到的群
+                //if (group.getGroupId()==signGroupId) {
+                //    Intent intent = new Intent(MainActivity.this,ToSignInActivity.class);
+                //    intent.putExtra("groupId",signGroup.getGroupId());
+                //    intent.putExtra("admin",signGroup.getAdminId());
+                //    startActivity(intent);
+                //} else {
                     Intent intent = new Intent(MainActivity.this,GroupActivity.class);
                     boolean isCreate;
                     if (groupPosition==0) {
@@ -229,7 +228,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                     intent.putExtra("isCreate",isCreate);
                     intent.putExtra("group_name",group.getGroupName());
                     startActivity(intent);
-                }
+                //}
 
 
 
