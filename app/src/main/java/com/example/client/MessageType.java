@@ -12,6 +12,8 @@ public enum MessageType {
     SET_UP_SIGN, //发起签到
     GET_TO_SIGN, //通知签到
     GET_SINGLE_SIGNIN_RECORD,
-    SIGN_IN
+    USER_SIGN_IN,
+    MY_SIGN_RECORD, //我的签到记录
+    MEMBER_SIGN_RECORD  //群成员所有的签到记录
 
 }

@@ -6,4 +6,11 @@
          android:icon="@mipmap/group_member"
          android:title=""
          app:showAsAction="always"/>
+
+     <item
+          android:id="@+id/group_me"
+          android:icon="@mipmap/group_me"
+          android:title=""
+          app:showAsAction="always"/>
+
 </menu>

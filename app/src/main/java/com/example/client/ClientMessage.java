@@ -4,6 +4,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.example.bean.Group;
 import com.example.bean.GroupMessage;
 import com.example.bean.GroupSignInMessage;
+import com.example.bean.MemberSignRecord;
+import com.example.bean.SignRecord;
 import com.example.bean.User;
 import com.example.util.DataUtil;
 
@@ -28,10 +30,20 @@ public class ClientMessage implements Serializable {
     private List<Group> createGroups;  //创建的组
     private List<Group> joinGroups;   //加入的组
 
-    private String groupId; //传输组Id
+    private int groupId; //传输组Id
     private int stateCode;  //错误状态码
     private List<User> memberList; //组成员
-    private String to;
+    private String to; //发给谁
+    private List<SignRecord> recordList;
+
+    public List<SignRecord> getRecordList() {
+        return recordList;
+    }
+
+    public void setRecordList(List<SignRecord> recordList) {
+        this.recordList = recordList;
+    }
+
 
     public void setGroupSignInMessage(GroupSignInMessage groupSignInMessage) {
         this.groupSignInMessage = groupSignInMessage;
@@ -74,11 +86,6 @@ public class ClientMessage implements Serializable {
         return phoneNumber;
     }
 
-
-
-    public String getGroupId() {
-        return groupId;
-    }
 
     public GroupSignInMessage getGroupSignInMessage() {
         return groupSignInMessage;
@@ -128,7 +135,11 @@ public class ClientMessage implements Serializable {
         this.memberList = memberList;
     }
 
-    public void setGroupId(String groupId) {
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 

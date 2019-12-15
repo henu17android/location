@@ -1,5 +1,7 @@
 package com.example.client;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.example.LocationApp;
 
@@ -28,6 +30,7 @@ public class MessagePostPool {
 
     public static void sendMessage(ClientMessage clientMessage) {
         String msg = JSON.toJSONString(clientMessage);
+        Log.d("sendMessage", "sendMessage: "+msg);
         OutputThread thread = new OutputThread(outputStream,msg);
         executor.execute(thread);
     }

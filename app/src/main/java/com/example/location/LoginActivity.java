@@ -52,17 +52,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         sharedPreferences = getSharedPreferences("SaveSetting",MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin",false);
 
-//        if(isLogin){
-//            //登录的处理
-//            Log.d("client:id", "LoginActivity "+client);
-//            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
-//            String number = sharedPreferences.getString("user_phone",null);
-//            DataUtil.USER_NUMBER = number;
-//
-//            startActivity(mainIntent);
-//        }else {
+        if(isLogin){
+            //登录的处理
+            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+            String number = sharedPreferences.getString("user_phone",null);
+            DataUtil.USER_NUMBER = number;
+
+            startActivity(mainIntent);
+        }else {
             initView();
-//        }
+        }
 
     }
 
@@ -110,7 +109,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ClientMessage clientMessage = new ClientMessage();
             clientMessage.setUser(user);
             clientMessage.setMessageType(MessageType.LOGIN);
-            String jsonString = JSON.toJSONString(clientMessage);
            //sendMessageBinder.sendMessage(jsonString);  //通过binder 发送数据
             MessagePostPool.sendMessage(clientMessage);
             Log.d(TAG, "sendLoginMessage: "+JSON.toJSONString(clientMessage));

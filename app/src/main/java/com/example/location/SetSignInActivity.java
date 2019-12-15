@@ -45,6 +45,7 @@ import com.example.bean.Group;
 import com.example.bean.GroupMessage;
 import com.example.bean.GroupSignInMessage;
 import com.example.client.ClientMessage;
+import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 
 import java.sql.Timestamp;
@@ -54,6 +55,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * 设置发起签到
+ */
 public class SetSignInActivity extends BaseActivity implements SensorEventListener, View.OnClickListener{
 
     private int PERMISSION_REQUEST = 127;
@@ -201,9 +205,10 @@ public class SetSignInActivity extends BaseActivity implements SensorEventListen
                 groupSignInMessage.setLongitude(mCurrentLon);
                 groupSignInMessage.setRegion(Integer.parseInt(mEtDistance.getText().toString()));
                 ClientMessage clientMessage = new ClientMessage();
-                clientMessage.setMessageType(MessageType.SIGN_IN);
+                clientMessage.setMessageType(MessageType.SET_UP_SIGN);
                 clientMessage.setGroupMessage(groupMessage);
                 clientMessage.setGroupSignInMessage(groupSignInMessage);
+                MessagePostPool.sendMessage(clientMessage);
                 finish();
                 break;
             default:

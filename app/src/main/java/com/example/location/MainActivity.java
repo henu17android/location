@@ -45,6 +45,9 @@ import android.widget.Toast;
 
 import com.example.bean.Group;
 import com.example.bean.GroupSignInMessage;
+import com.example.bean.MemberSignRecord;
+import com.example.bean.SignRecord;
+import com.example.bean.User;
 import com.example.client.ClientMessage;
 import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
@@ -143,21 +146,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
         //先创建一点，看一下
 //
         createdGroup = new ArrayList<>();
-//
-//        for (int i = 0;i<5;i++) {
-//            Group group = new Group();
-//            group.setGroupName("Group-----"+i);
-//            createdGroup.add(group);
-//        }
-//
-        joinedGroup = new ArrayList<>();
-//        for (int i =0;i<8;i++){
-//            Group group = new Group();
-//            group.setGroupId(String.valueOf(i));
-//            group.setGroupName("Group-----"+i);
-//            joinedGroup.add(group);
-//        }
 
+        for (int i = 0;i<5;i++) {
+            Group group = new Group();
+            group.setGroupName("Group-----"+i);
+            createdGroup.add(group);
+        }
+
+        joinedGroup = new ArrayList<>();
+        for (int i =0;i<8;i++){
+            Group group = new Group();
+            group.setGroupId(i);
+            group.setGroupName("Group-----"+i);
+            joinedGroup.add(group);
+        }
+
+
+        groups.add(createdGroup);
+        groups.add(joinedGroup);
+        mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
+        mGroupList.setAdapter(mAdapter);
 
 
     }
@@ -183,7 +191,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 //向服务器发送消息 搜索
                 ClientMessage clientMessage = new ClientMessage();
                 clientMessage.setMessageType(MessageType.SEARCH_GROUP);
-                clientMessage.setGroupId(keyword);
+                clientMessage.setGroupId(Integer.parseInt(keyword));
                 MessagePostPool.sendMessage(clientMessage);
 
             }
@@ -203,13 +211,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Group group = groups.get(groupPosition).get(childPosition);
 
-                //如果点击群号码为要签到的群
-                if (group.getGroupId()==signGroupId) {
-                    Intent intent = new Intent(MainActivity.this,ToSignInActivity.class);
-                    intent.putExtra("groupId",signGroup.getGroupId());
-                    intent.putExtra("admin",signGroup.getAdminId());
-                    startActivity(intent);
-                } else {
+                ////如果点击群号码为要签到的群
+                //if (group.getGroupId()==signGroupId) {
+                //    Intent intent = new Intent(MainActivity.this,ToSignInActivity.class);
+                //    intent.putExtra("groupId",signGroup.getGroupId());
+                //    intent.putExtra("admin",signGroup.getAdminId());
+                //    startActivity(intent);
+                //} else {
                     Intent intent = new Intent(MainActivity.this,GroupActivity.class);
                     boolean isCreate;
                     if (groupPosition==0) {
@@ -221,7 +229,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                     intent.putExtra("isCreate",isCreate);
                     intent.putExtra("group_name",group.getGroupName());
                     startActivity(intent);
-                }
+                //}
 
 
 
@@ -303,14 +311,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                         break;
 
                     case R.id.share:
-                        if(ActivityCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                                PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(MainActivity.this,
-                                    PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
-                        }else{
-                            ToExcel();
-                        }
+//                        if(ActivityCompat.checkSelfPermission(MainActivity.this,
+//                                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+//                                PackageManager.PERMISSION_GRANTED) {
+//                            ActivityCompat.requestPermissions(MainActivity.this,
+//                                    PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+//                        }else{
+//                            ToExcel();
+//                        }
                         break;
                 }
             }
@@ -320,6 +328,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
         contentView.findViewById(R.id.add_friend_group).setOnClickListener(listener);
         contentView.findViewById(R.id.share).setOnClickListener(listener);
     }
+
+
     private void ToExcel(){
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/record.xls";
         String[] title = {"id","签到人","签到时间","签到结果"};
@@ -384,11 +394,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
             case GET_GROUPS:
                 createdGroup = msg.getCreateGroups();
                 joinedGroup = msg.getJoinGroups();
-                Log.d(TAG, "getMessage: "+createdGroup.size() +"     "+joinedGroup.size());
-                groups.add(createdGroup);
-                groups.add(joinedGroup);
-                mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
-                mGroupList.setAdapter(mAdapter);
+//                Log.d(TAG, "getMessage: "+createdGroup.size() +"     "+joinedGroup.size());
+//                groups.add(createdGroup);
+//                groups.add(joinedGroup);
+//                mAdapter = new GroupExpandListAdapter(this, groupNames, groups);
+//                mGroupList.setAdapter(mAdapter);
                 //   dataLoadingLayout.setVisibility(View.GONE);
 
                 break;
@@ -402,6 +412,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 NotificationUtil notification = new NotificationUtil(MainActivity.this);
                 notification.sendNotification("申请加入群聊",msg.getUser().getUserName()+
                         "申请加入群"+msg.getGroup().getGroupName());
+                Log.d("SendMessage", "to: "+msg.getPhoneNumber());
                 new AlertDialog.Builder(MainActivity.this).setTitle("加群申请：")
                         .setMessage(msg.getUser().getUserName()+
                                 "申请加入群："+msg.getGroup().getGroupName())
@@ -411,6 +422,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                                 ClientMessage clientMessage1 = new ClientMessage();
                                 clientMessage1.setMessageType(MessageType.APPLY_JOIN_GROUP_RESULT);
                                 clientMessage1.setSuccess(false);
+                                clientMessage1.setTo(msg.getPhoneNumber());
                                 MessagePostPool.sendMessage(clientMessage1);
                             }
                         })
@@ -420,6 +432,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                                 ClientMessage clientMessage1 = new ClientMessage();
                                 clientMessage1.setMessageType(MessageType.APPLY_JOIN_GROUP_RESULT);
                                 clientMessage1.setGroup(msg.getGroup());
+                                clientMessage1.setTo(msg.getPhoneNumber());
                                 clientMessage1.setSuccess(true);
                                 MessagePostPool.sendMessage(clientMessage1);
                             }
@@ -480,11 +493,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
 
 
     }
-
-
-
-
-
 
 
     //发送申请

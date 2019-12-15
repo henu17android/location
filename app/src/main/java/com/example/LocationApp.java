@@ -26,11 +26,11 @@ public class LocationApp extends Application {
         //百度地图的使用
         SDKInitializer.initialize(this);
         Intent intent = new Intent(this,SocketService.class);
-        if(Build.VERSION.SDK_INT>26){
-            startForegroundService(intent);
-        }else{
+//        if(Build.VERSION.SDK_INT>26){
+//            startForegroundService(intent);
+//        }else{
             startService(intent);
-        }
+//        }
     }
 
     public ActivityUtil getActivityUtil(){
