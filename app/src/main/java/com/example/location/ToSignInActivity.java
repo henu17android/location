@@ -40,6 +40,7 @@ import com.example.Service.SocketService;
 import com.example.bean.Group;
 import com.example.bean.GroupSignInMessage;
 import com.example.client.ClientMessage;
+import com.example.client.MessagePostPool;
 import com.example.client.MessageType;
 import com.example.util.TimeTransform;
 import com.example.client.ClientMessage;
@@ -186,11 +187,11 @@ public class ToSignInActivity extends BaseActivity implements View.OnClickListen
                 }else {
                     groupSignInMessage.setResult(0);
                 }
-//                ClientMessage clientMessage = new ClientMessage();
-//                clientMessage.setMessageType(MessageType.USER_SIGN_IN);
-//                clientMessage.setGroupSignInMessage(groupSignInMessage);
-//                sendMessageBinder.sendMessage(JSON.toJSONString(clientMessage));
-//                finish();
+                ClientMessage clientMessage = new ClientMessage();
+                clientMessage.setMessageType(MessageType.USER_SIGN_IN);
+                clientMessage.setGroupSignInMessage(groupSignInMessage);
+                MessagePostPool.sendMessage(clientMessage);
+                finish();
                 break;
             default:
                     break;

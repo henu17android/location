@@ -14,13 +14,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.bean.Group;
+import com.example.bean.SignRecord;
 import com.example.client.ClientMessage;
+import com.example.client.MessagePostPool;
+import com.example.client.MessageType;
 import com.example.fragment.CreatedFragment;
 import com.example.fragment.JoinFragment;
 
 import com.example.client.ClientMessage;
 
-public class GroupActivity extends BaseActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GroupActivity extends BaseActivity implements CreatedFragment.startSignClickListener {
 /**
  * 群详情页面
  */
@@ -54,10 +61,7 @@ public class GroupActivity extends BaseActivity {
         isCreate = getIntent().getBooleanExtra("isCreate",false);
         groupName = getIntent().getStringExtra("group_name");
         groupId = getIntent().getIntExtra("group_id",-1);
-
-        toolbar.setTitle(groupName);
-        Log.d("GroupActivity", "onCreate: "+isCreate);
-
+        actionBar.setTitle(groupName);
 
     }
 
@@ -74,6 +78,8 @@ public class GroupActivity extends BaseActivity {
     public void getMessage(ClientMessage msg) {
 
     }
+
+    //根据群类型显示不同的toolbar图标
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_toolbar,menu);
@@ -82,10 +88,10 @@ public class GroupActivity extends BaseActivity {
         if (isCreate) {
             memberItem.setVisible(true);
             meItem.setVisible(false);
-            Bundle bundle = new Bundle();
-            bundle.putString("group_id",String.valueOf(groupId)); //将群id// 传递给fragment
+//            Bundle bundle = new Bundle();
+//            bundle.putString("group_id",String.valueOf(groupId)); //将群id// 传递给fragment
             CreatedFragment fragment = new CreatedFragment();
-            fragment.setArguments(bundle);
+           // fragment.setArguments(bundle);
             replaceFragment(fragment);
         }else {
             memberItem.setVisible(false);
@@ -100,14 +106,37 @@ public class GroupActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.group_member:
+                ClientMessage clientMessage = new ClientMessage();
+                clientMessage.setMessageType(MessageType.MEMBER_SIGN_RECORD);
+                clientMessage.setGroupId(groupId);
+                MessagePostPool.sendMessage(clientMessage);
+
                 Intent intent = new Intent(GroupActivity.this,GroupMemberActivity.class);
-                intent.putExtra("group_id",groupId);
                 startActivity(intent);
                 break;
-            default:break;
+
+            case R.id.group_me:
+                ClientMessage clientMessage1 = new ClientMessage();
+                clientMessage1.setMessageType(MessageType.MY_SIGN_RECORD);
+                clientMessage1.setGroupId(groupId);
+                MessagePostPool.sendMessage(clientMessage1);
+
+                Intent intent1 = new Intent(GroupActivity.this,MyRecordActivity.class);
+                startActivity(intent1);
+                break;
+
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void startSign(Boolean isClick) {
+        if (isClick) {
+            Intent intent = new Intent(GroupActivity.this,SetSignInActivity.class);
+            intent.putExtra("group_id",groupId);
+            startActivity(intent);
+        }
     }
 }

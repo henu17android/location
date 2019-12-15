@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.bean.SignRecord;
 import com.example.bean.User;
 import com.example.location.R;
+import com.example.util.TimeTransform;
 import com.hgdendi.expandablerecycleradapter.BaseExpandableRecyclerViewAdapter;
 
 import java.util.List;
@@ -62,8 +63,13 @@ public class GroupMemberDetailsAdapter extends BaseExpandableRecyclerViewAdapter
 
     @Override
     public void onBindChildViewHolder(ChildVH holder, User groupBean, SignRecord signRecord) {
-        holder.recordResult.setText(signRecord.getSignResult());
-        holder.recordTime.setText(signRecord.getSignTime());
+        if (signRecord.isSignResult()){
+            holder.recordResult.setText("签到成功");
+        }else {
+            holder.recordResult.setText("签到失败");
+        }
+
+        holder.recordTime.setText(TimeTransform.stampToTime(signRecord.getSignTime()));
     }
 
     static class GroupVH extends BaseExpandableRecyclerViewAdapter.BaseGroupViewHolder {

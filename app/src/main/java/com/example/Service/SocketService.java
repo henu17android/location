@@ -51,6 +51,7 @@ public class SocketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+//        startForeground();
         initSocket();
     }
 
@@ -72,7 +73,8 @@ public class SocketService extends Service {
                public void run() {
                    Log.d(TAG, "run: initSocket");
                    try {
-                       socket = new Socket("192.168.1.174",8096);
+                       socket = new Socket("106.52.109.122",8098);
+//                       socket = new Socket("192.168.1.174",8096);
                        toastMessage("已连接到服务器");
                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
                        MessagePostPool.outputStream = dataOutputStream;

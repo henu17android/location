@@ -59,6 +59,7 @@ import com.example.zhouwei.library.CustomPopWindow;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
+
 /**
  *
  */
@@ -190,7 +191,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 //向服务器发送消息 搜索
                 ClientMessage clientMessage = new ClientMessage();
                 clientMessage.setMessageType(MessageType.SEARCH_GROUP);
-                clientMessage.setGroupId(keyword);
+                clientMessage.setGroupId(Integer.parseInt(keyword));
                 MessagePostPool.sendMessage(clientMessage);
 
             }
@@ -327,6 +328,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
         contentView.findViewById(R.id.add_friend_group).setOnClickListener(listener);
         contentView.findViewById(R.id.share).setOnClickListener(listener);
     }
+
+
     private void ToExcel(){
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/record.xls";
         String[] title = {"id","签到人","签到时间","签到结果"};
@@ -409,6 +412,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                 NotificationUtil notification = new NotificationUtil(MainActivity.this);
                 notification.sendNotification("申请加入群聊",msg.getUser().getUserName()+
                         "申请加入群"+msg.getGroup().getGroupName());
+                Log.d("SendMessage", "to: "+msg.getPhoneNumber());
                 new AlertDialog.Builder(MainActivity.this).setTitle("加群申请：")
                         .setMessage(msg.getUser().getUserName()+
                                 "申请加入群："+msg.getGroup().getGroupName())
@@ -418,6 +422,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                                 ClientMessage clientMessage1 = new ClientMessage();
                                 clientMessage1.setMessageType(MessageType.APPLY_JOIN_GROUP_RESULT);
                                 clientMessage1.setSuccess(false);
+                                clientMessage1.setTo(msg.getPhoneNumber());
                                 MessagePostPool.sendMessage(clientMessage1);
                             }
                         })
@@ -427,6 +432,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
                                 ClientMessage clientMessage1 = new ClientMessage();
                                 clientMessage1.setMessageType(MessageType.APPLY_JOIN_GROUP_RESULT);
                                 clientMessage1.setGroup(msg.getGroup());
+                                clientMessage1.setTo(msg.getPhoneNumber());
                                 clientMessage1.setSuccess(true);
                                 MessagePostPool.sendMessage(clientMessage1);
                             }
@@ -487,11 +493,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,S
 
 
     }
-
-
-
-
-
 
 
     //发送申请

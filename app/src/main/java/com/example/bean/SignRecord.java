@@ -1,27 +1,27 @@
 package com.example.bean;
 
 /**
- *  个人签到记录
+ *  签到记录
  */
 public class SignRecord {
 
-    String signTime; //签到时间
-    String signResult;  //签到结果
-    int groupId;
+    private long signTime; //签到时间
+    private boolean signResult;  //签到结果
+    private int groupId;
 
-    public String getSignTime() {
+    public long getSignTime() {
         return signTime;
     }
 
-    public String getSignResult() {
-        return signResult;
-    }
-
-    public void setSignTime(String signTime) {
+    public void setSignTime(long signTime) {
         this.signTime = signTime;
     }
 
-    public void setSignResult(String signResult) {
+    public boolean isSignResult() {
+        return signResult;
+    }
+
+    public void setSignResult(boolean signResult) {
         this.signResult = signResult;
     }
 

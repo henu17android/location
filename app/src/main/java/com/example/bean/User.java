@@ -21,7 +21,7 @@ public class User implements Serializable , BaseExpandableRecyclerViewAdapter.Ba
     @JSONField(name = "Password")
     private String password = null;
 
-    //签到记录
+    @JSONField(name = "SignRecord")
     private List<SignRecord> signRecord;
 
     public User(String phoneNumber, String password) {
@@ -83,18 +83,31 @@ public class User implements Serializable , BaseExpandableRecyclerViewAdapter.Ba
         this.signRecord = signRecord;
     }
 
+    @JSONField(serialize=false)
     @Override
     public int getChildCount() {
-        return signRecord.size();
+        if (signRecord==null) {
+            return 0;
+        }else {
+            return signRecord.size();
+        }
+
     }
 
+    @JSONField(serialize=false)
     @Override
     public SignRecord getChildAt(int childIndex) {
         return childIndex < signRecord.size() ? signRecord.get(childIndex) : null;
     }
 
+    @JSONField(serialize=false)
     @Override
     public boolean isExpandable() {
-        return signRecord.size() > 0;
+        if (signRecord==null) {
+            return false;
+        }else {
+            return signRecord.size() > 0;
+        }
+
     }
 }
